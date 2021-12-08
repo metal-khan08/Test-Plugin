@@ -12,16 +12,15 @@
  * @subpackage Jobs_Board/admin/partials
  */
 
-echo  '<input type="text" name="custom_input" id="custom_input" value=""/>';
+echo  '<input type="text" name="timings_custom_input" id="timings_custom_input" value=""/>';
 
-
-function save_location_data(){
+function save_timings_data(){
     global $post;
     if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE){
         return $post ->ID;
     }
 
-    update_post_meta( $post ->ID, 'custom_input', $_POST["custom_input"] );
+    update_post_meta( $post ->ID, 'timings_custom_input', $_POST["timings_custom_input"] );
 }
 ?>
 

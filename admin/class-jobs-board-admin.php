@@ -110,7 +110,7 @@ class Jobs_Board_Admin {
 
 		$labels = array(
 			'name' =>'jobs_board',
-			  'add_new_item' =>'Add New Job',
+			  'add_new_item' =>'New Job',
 			  'edit_item' =>'Edit Job',
 			  'all_items'=> 'All Jobs',
 			  'Singular_name'=> 'Job'
@@ -136,7 +136,7 @@ class Jobs_Board_Admin {
 		register_post_type( 'jobs', $args );
 	}
 
-	//location metabox
+	//adding metaboxes metabox
 
 	function location_metabox(){
 		add_meta_box(
@@ -147,19 +147,86 @@ class Jobs_Board_Admin {
 			'side',
 			'low'
 		);
+
+		add_meta_box(
+			'salary_meta_box_id',
+			'Salary',
+			 array($this,'salary_meta_input_box'),
+			'jobs',
+			'side',
+			'low'
+		);
+
+
+		add_meta_box(
+			'timings_meta_box_id',
+			'Timings',
+			 array($this,'timings_meta_input_box'),
+			'jobs',
+			'side',
+			'low'
+		);
+
+		add_meta_box(
+			'benefits_meta_box_id',
+			'Benefits',
+			 array($this,'benefits_meta_input_box'),
+			'jobs',
+			'side',
+			'low'
+		);
 	}
+
+	//pionting towards the metabox funtion
 
 	function location_meta_input_box(){ 
 		require_once 'partials/jobs-board-admin-display.php';
 	}
-
-
-	function save_post_data(){
-		global $post;
-		if(define('DOING_AUTOSAVE') && DOING_AUTOSAVE()){
-			return $post ->ID;
-		}
-
-		update_post_meta( $post ->ID, 'custom_input', $_POST["custom_input"] );
+	function salary_meta_input_box(){ 
+		require_once 'partials/jobs-board-admin-display-salary.php';
 	}
+	function timings_meta_input_box(){ 
+		require_once 'partials/jobs-board-admin-display-timings.php';
+	}
+	function benefits_meta_input_box(){ 
+		require_once 'partials/jobs-board-admin-display-benefits.php';
+	}
+
+	// adding custom taxonomy
+
+	function job_boards_taxonomy(){
+		$labels = array(
+			'name' =>  'Job Category',
+			'singular_name' =>  'job',
+			'search_items' =>  __( 'Search jobs' ),
+			'popular_items' => __( 'Popular jobs' ),
+			'all_items' => __( 'All jobs' ),
+			'parent_item' => null,
+			'parent_item_colon' => null,
+			'edit_item' => __( 'Edit job' ), 
+			'update_item' => __( 'Update job' ),
+			'add_new_item' => __( 'Add New job' ),
+			'new_item_name' => __( 'New job Name' ),
+			'separate_items_with_commas' => __( 'Separate jobs with commas' ),
+			'add_or_remove_items' => __( 'Add or remove jobs' ),
+			'choose_from_most_used' => __( 'Choose from the most used jobs' ),
+			'menu_name' => __( 'Jobs' ),
+		  ); 
+		 
+		// Now register the non-hierarchical taxonomy like tag
+		 
+		  register_taxonomy('jobs','jobs',array(
+			'hierarchical' => false,
+			'labels' => $labels,
+			'show_ui' => true,
+			'show_in_rest' => true,
+			'show_admin_column' => true,
+			'update_count_callback' => '_update_post_term_count',
+			'query_var' => true,
+			'rewrite' => array( 'slug' => 'topic' ),
+		  ));
+
+	}
+
+
 }

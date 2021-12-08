@@ -162,8 +162,14 @@ class Jobs_Board {
 		
 		//adding meta box
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'location_metabox' );
+
+		//adding a taxonomy
+		$this->loader->add_action( 'init', $plugin_admin, 'job_boards_taxonomy' );
+
 		//saving the post data
 		$this->loader->add_action( 'save_post', $plugin_admin, 'save_post_data' );
+
+		
 
 	}	
 	
