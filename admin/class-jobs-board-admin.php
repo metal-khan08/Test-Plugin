@@ -155,7 +155,7 @@ class Jobs_Board_Admin {
 		require_once 'partials/jobs-board-admin-display.php';
 	}
 	function save_details(){
-		$jdetails =array("meta_location", "meta_number", "meta_timings", "meta_benefits");
+		$jdetails =array("meta_location", "meta_number", "meta_timings", "custom_benefits");
 		global $post;
 	if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE){
 		return $post->ID;
