@@ -167,7 +167,8 @@ class Jobs_Board {
 		$this->loader->add_action( 'init', $plugin_admin, 'job_boards_taxonomy' );
 
 		//saving the post data
-		
+		$this->loader->add_action( 'save_post', $plugin_admin, 'save_details' );
+
 
 		
 

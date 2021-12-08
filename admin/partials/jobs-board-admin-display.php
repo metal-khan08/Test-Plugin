@@ -11,19 +11,17 @@
  * @package    Jobs_Board
  * @subpackage Jobs_Board/admin/partials
  */
-
-echo  '<input type="text" name="custom_input" id="custom_input" value=""/>';
-
-
-function save_location_data(){
-    global $post;
-    if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE){
-        return $post ->ID;
-    }
-
-    update_post_meta( $post ->ID, 'custom_input', $_POST["custom_input"] );
-}
 ?>
+<ul>
+    <h3>Location</h3>
+    <input type="text" name="meta_location" id="meta_location" value=""/>
+    <h3>Salary</h3>
+    <input type="number" name="meta_number" id="meta_number" value=""/>
+    <h3>Timings</h3>
+    <input type="text" name="meta_timings" id="meta_timings" value=""/>
+    <h3>Benefits</h3>
+    <input type="text" name="custom_benefits" id="custom_benefits" value=""/>
+ </ul>
 
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->

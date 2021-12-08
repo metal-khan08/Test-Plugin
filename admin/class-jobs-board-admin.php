@@ -141,36 +141,8 @@ class Jobs_Board_Admin {
 	function location_metabox(){
 		add_meta_box(
 			'location_meta_box_id',
-			'Location',
+			'Job Details',
 			 array($this,'location_meta_input_box'),
-			'jobs',
-			'side',
-			'low'
-		);
-
-		add_meta_box(
-			'salary_meta_box_id',
-			'Salary',
-			 array($this,'salary_meta_input_box'),
-			'jobs',
-			'side',
-			'low'
-		);
-
-
-		add_meta_box(
-			'timings_meta_box_id',
-			'Timings',
-			 array($this,'timings_meta_input_box'),
-			'jobs',
-			'side',
-			'low'
-		);
-
-		add_meta_box(
-			'benefits_meta_box_id',
-			'Benefits',
-			 array($this,'benefits_meta_input_box'),
 			'jobs',
 			'side',
 			'low'
@@ -182,15 +154,20 @@ class Jobs_Board_Admin {
 	function location_meta_input_box(){ 
 		require_once 'partials/jobs-board-admin-display.php';
 	}
-	function salary_meta_input_box(){ 
-		require_once 'partials/jobs-board-admin-display-salary.php';
+	function save_details(){
+		$jdetails =array("meta_location", "meta_number", "meta_timings", "meta_benefits");
+		global $post;
+	if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE){
+		return $post->ID;
 	}
-	function timings_meta_input_box(){ 
-		require_once 'partials/jobs-board-admin-display-timings.php';
-	}
-	function benefits_meta_input_box(){ 
-		require_once 'partials/jobs-board-admin-display-benefits.php';
-	}
+
+	$detnum=0;
+	while($detnum<5){
+		$detail =$jdetails[$detnum];
+	update_post_meta( $post->ID, $detail, $POST[$detail] );
+	$detnum++;
+		}
+}
 
 	// adding custom taxonomy
 
