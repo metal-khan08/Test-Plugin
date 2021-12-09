@@ -140,13 +140,14 @@ class Jobs_Board_Admin {
 
 	function location_metabox(){
 		add_meta_box(
-			'location_meta_box_id',
+			'pdetails',
 			'Job Details',
 			 array($this,'location_meta_input_box'),
 			'jobs',
 			'side',
 			'low'
 		);
+    
 	}
 
 	//pionting towards the metabox funtion
@@ -154,20 +155,19 @@ class Jobs_Board_Admin {
 	function location_meta_input_box(){ 
 		require_once 'partials/jobs-board-admin-display.php';
 	}
-	function save_details(){
-		$jdetails =array("meta_location", "meta_number", "meta_timings", "custom_benefits");
-		global $post;
-	if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE){
-		return $post->ID;
-	}
 
-	$detnum=0;
-	while($detnum<5){
-		$detail =$jdetails[$detnum];
-	update_post_meta( $post->ID, $detail, $POST[$detail] );
-	$detnum++;
+	function pdetails_save(){
+		global $post;
+		if(defined('DOING_AUTOSAVE')&& DOING_ATUOSAVE){
+			return $post->ID ;
 		}
-}
+
+		update_post_meta($post->ID, "meta_location", $_POST["meta_location"] );
+		update_post_meta($post->ID, "meta_number", $_POST["meta_number"] );
+		update_post_meta($post->ID, "meta_timings", $_POST["meta_timings"] );
+		update_post_meta($post->ID, "custom_benefits", $_POST["custom_benefits"] );
+	}
+	
 
 	// adding custom taxonomy
 
