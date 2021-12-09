@@ -103,15 +103,17 @@ class Jobs_Board_Public {
 	//short code to display jobs on the page
 	function public_hello_world(){
 
-		//this is to show the option on the above
+		//this is to show the option on the above for all the jobs
 		$args = array(
 			'post_type'      => 'jobs',
 			'posts_per_page' => '-1',
 			'publish_status' => 'published',
 		 );
-		 $query = new WP_Query($args);
+		 $query = new WP_Query($args); ?>
 
-		 ?><div class="dropdown">
+		 <h1>Jobs Board</h1>
+
+		 <div class="dropdown">
 		 <ul>
 		 <li class="dropbtn">Select Job</li>
 			 <div class="dropdown-content">
@@ -126,6 +128,9 @@ class Jobs_Board_Public {
 				</div>
 			</ul>
 		</div>
+
+
+
 		<!-- select job type category -->
 		<div class="dropdown">
 			<ul>
@@ -139,18 +144,19 @@ class Jobs_Board_Public {
 				 $jobtax = wp_get_post_terms( $jobid, 'jobs');
 				 foreach($jobtax as $jobtax) {
 					$url = get_term_link($jobtax->slug, 'jobs');
-					echo 	'<li><a href="'.$url.'">'. $jobtax->name .'</a></li>';
-					
-				 }
-				?>
-			<?php } ?>
-			</ul>
+					echo 	'<li><a href="'.$url.'">'. $jobtax->name .'</a></li>';					
+				 }			
+				  } ?>
+					</ul>
 				</div>
 			</ul>
 		</div>
 
 		<!-- following are the 3 jobs box -->
-		<div>Following are Some available Jobs</div>
+
+				 <div class="space-div"></div>
+
+		<h4>Following are Some available Jobs</h4>
 <?php
 		wp_reset_postdata();
 
@@ -168,13 +174,8 @@ class Jobs_Board_Public {
 			<ul>
 				<li><?php the_title() ?></li>
 			</ul>
-
-<?php	
-			}	
-		wp_reset_postdata();
-		
-?>
-		
-<?php	}
+<?php	 }	
+		wp_reset_postdata()	;
+	}
 
 }
