@@ -100,9 +100,61 @@ class Jobs_Board_Public {
 
 	}
 
-	//our first hello wold shortcode
+	//short code to display jobs on the page
 	function public_hello_world(){
-		//just say hello
+
+		//this is to show the option on the above
+		$args = array(
+			'post_type'      => 'jobs',
+			'posts_per_page' => '-1',
+			'publish_status' => 'published',
+		 );
+		 $query = new WP_Query($args);
+
+		 ?><div class="dropdown">
+		 <ul>
+		 <li class="dropbtn">Select Job</li>
+			 <div class="dropdown-content">
+				 <ul>
+				 <?php
+		while($query->have_posts()) {
+		$query->the_post() ;?>
+				<li><a href="<?php the_permalink();?>"><?php the_title(); ?></a></li>
+	
+			<?php } ?>
+			</ul>
+				</div>
+			</ul>
+		</div>
+		<!-- select job type category -->
+		<div class="dropdown">
+			<ul>
+			<li class="dropbtn">job type</li>
+				<div class="dropdown-content">
+					<ul>
+				 <?php
+		while($query->have_posts()) {
+		$query->the_post() ;
+		$jobid=get_the_ID();
+				 $jobtax = wp_get_post_terms( $jobid, 'jobs');
+				 foreach($jobtax as $jobtax) {
+					$url = get_term_link($jobtax->slug, 'jobs');
+					echo 	'<li><a href="'.$url.'">'. $jobtax->name .'</a></li>';
+					
+				 }
+				?>
+			<?php } ?>
+			</ul>
+				</div>
+			</ul>
+		</div>
+
+		<!-- following are the 3 jobs box -->
+		<div>Following are Some available Jobs</div>
+<?php
+		wp_reset_postdata();
+
+		//this is to show three jobs at the bottom
 		$args = array(
 			'post_type'      => 'jobs',
 			'posts_per_page' => '3',
@@ -110,23 +162,19 @@ class Jobs_Board_Public {
 		 );
 		
 		 $query = new WP_Query($args);
-		
-		
 		while($query->have_posts()) {
 		$query->the_post() ;
-		
-		$location_output=get_post_meta($post->ID, 'meta_location', true);
-		$salary_output=get_post_meta($post->ID, 'meta_number', true);
-		$timing_output=get_post_meta($post->ID, 'meta_timings', true);
-		$benefits_output=get_post_meta($post->ID, 'custom_benefits', true);
-		?>
-		this is the name of the job <?php the_title();
-		?><br>
-		
-	<?php	
+		$jobid=get_the_ID(); ?>
+			<ul>
+				<li><?php the_title() ?></li>
+			</ul>
+
+<?php	
+			}	
 		wp_reset_postdata();
 		
-		}
-	}
+?>
+		
+<?php	}
 
 }
