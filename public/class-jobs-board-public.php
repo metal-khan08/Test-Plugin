@@ -100,4 +100,33 @@ class Jobs_Board_Public {
 
 	}
 
+	//our first hello wold shortcode
+	function public_hello_world(){
+		//just say hello
+		$args = array(
+			'post_type'      => 'jobs',
+			'posts_per_page' => '3',
+			'publish_status' => 'published',
+		 );
+		
+		 $query = new WP_Query($args);
+		
+		
+		while($query->have_posts()) {
+		$query->the_post() ;
+		
+		$location_output=get_post_meta($post->ID, 'meta_location', true);
+		$salary_output=get_post_meta($post->ID, 'meta_number', true);
+		$timing_output=get_post_meta($post->ID, 'meta_timings', true);
+		$benefits_output=get_post_meta($post->ID, 'custom_benefits', true);
+		?>
+		this is the name of the job <?php the_title();
+		?><br>
+		
+	<?php	
+		wp_reset_postdata();
+		
+		}
+	}
+
 }

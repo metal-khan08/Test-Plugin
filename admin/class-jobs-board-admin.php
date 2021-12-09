@@ -206,7 +206,9 @@ class Jobs_Board_Admin {
 		  ));
 	}
 
+		//creating short code call back function
 
+		
 
 
 }
