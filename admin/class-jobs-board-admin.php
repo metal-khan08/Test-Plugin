@@ -150,11 +150,13 @@ class Jobs_Board_Admin {
     
 	}
 
-	//pionting towards the metabox funtion
+	//call back funtion for the metabox
 
 	function location_meta_input_box(){ 
 		require_once 'partials/jobs-board-admin-display.php';
 	}
+
+	//saving data into the data base
 
 	function pdetails_save(){
 		global $post;
@@ -202,8 +204,9 @@ class Jobs_Board_Admin {
 			'query_var' => true,
 			'rewrite' => array( 'slug' => 'topic' ),
 		  ));
-
 	}
+
+
 
 
 }

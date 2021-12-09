@@ -168,10 +168,6 @@ class Jobs_Board {
 
 		//saving the post data
 		$this->loader->add_action( 'save_post', $plugin_admin, 'pdetails_save' );
-
-
-		
-
 	}	
 	
 

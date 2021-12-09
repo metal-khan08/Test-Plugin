@@ -11,6 +11,9 @@
  * @package    Jobs_Board
  * @subpackage Jobs_Board/admin/partials
  */
+
+
+ //fetch the vale from the database and saved in to variables
 global $post;
 $data =get_post_custom( $post->ID );
 $locval=isset($data['meta_location']) ? esc_attr( $data['meta_location'][0] ):'no value';
@@ -18,6 +21,11 @@ $salval=isset($data['meta_number']) ? esc_attr( $data['meta_number'][0] ):'no va
 $timval=isset($data['meta_timings']) ? esc_attr( $data['meta_timings'][0] ):'no value';
 $benval=isset($data['custom_benefits']) ? esc_attr( $data['custom_benefits'][0] ):'no value';
  ?>
+
+
+
+
+<!-- this the fields of meta box -->
 <ul>
     <h3>Location</h3>
     <input type="text" name="meta_location" id="meta_location" value="<?php echo $locval?>"/>
