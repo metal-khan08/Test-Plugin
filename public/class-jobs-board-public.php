@@ -113,30 +113,28 @@ class Jobs_Board_Public {
 
 		 <h1>Jobs Board</h1>
 
-		 <div class="dropdown">
-		 <ul>
-		 <li class="dropbtn">Select Job</li>
-			 <div class="dropdown-content">
-				 <ul>
+		 <div class="contact-form">
+		 <form method="GET" action="GET">
+			 <select id="city">
+			<option value="city">Select City</option>
 				 <?php
+		$cityarray=array();
 		while($query->have_posts()) {
-		$query->the_post() ;?>
-				<li><a href="<?php the_permalink();?>"><?php the_title(); ?></a></li>
-	
-			<?php } ?>
-			</ul>
-				</div>
-			</ul>
-		</div>
-
-
+		$query->the_post();
+		$jobid=get_the_ID();
+		$jcity= get_post_meta( $jobid, 'meta_location', true);
+		if(in_array($jcity,$cityarray) == false){
+		?>
+				<option id="<?php echo $jcity; ?>" name="<?php echo $jcity; ?>" value="<?php echo $jcity; ?>"><?php echo $jcity; ?></option>
+			<?php 
+			array_push($cityarray,$jcity);
+			}
+		} ?>
+			</select>
 
 		<!-- select job type category -->
-		<div class="dropdown">
-			<ul>
-			<li class="dropbtn">job type</li>
-				<div class="dropdown-content">
-					<ul>
+			 <select id="type">
+			 <option value="type">Select Category</option>
 				 <?php
 		while($query->have_posts()) {
 		$query->the_post() ;
@@ -144,19 +142,21 @@ class Jobs_Board_Public {
 				 $jobtax = wp_get_post_terms( $jobid, 'jobs');
 				 foreach($jobtax as $jobtax) {
 					$url = get_term_link($jobtax->slug, 'jobs');
-					echo 	'<li><a href="'.$url.'">'. $jobtax->name .'</a></li>';					
+					echo 	'<option name="'. $jobtax->name .'" id="'. $jobtax->name .'">'. $jobtax->name .'</option>';					
 				 }			
 				  } ?>
-					</ul>
-				</div>
-			</ul>
+					</select>
+					<h4>Select Salary Range</h4>
+					<input type="range" />
+					<input type="submit" value="GO!">
+		</form>
 		</div>
 
 		<!-- following are the 3 jobs box -->
 
 				 <div class="space-div"></div>
 
-		<h4>Following are Some available Jobs</h4>
+		<h2>Available Jobs</h2	>
 <?php
 		wp_reset_postdata();
 
@@ -176,6 +176,34 @@ class Jobs_Board_Public {
 			</ul>
 <?php	 }	
 		wp_reset_postdata()	;
+
+
+			//on GO! button
+	$theaction= null;
+	if(isset($_GET['action'])){
+		
+		$args = array(
+			'post_type'      => 'jobs',
+			'posts_per_page' => '-1',
+			'publish_status' => 'published',
+		 );
+		 $query = new WP_Query($args); 
+	
+		$cityarray=array();
+		while($query->have_posts()) {
+		$query->the_post();
+		$jobid=get_the_ID();
+		$jcity= get_post_meta( $jobid, 'meta_location', true);
+		// if(in_array($jcity,$cityarray) == false){
+		
+		// 	}
+		the_title();
+		get_post_permalink();
+
+		} 
+
+	}
+	 
 	}
 
 }

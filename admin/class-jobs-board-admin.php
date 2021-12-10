@@ -109,7 +109,7 @@ class Jobs_Board_Admin {
 	function create_jobsboard_cpt() {
 
 		$labels = array(
-			'name' =>'jobs_board',
+			'name' =>'Jobs Board',
 			  'add_new_item' =>'New Job',
 			  'edit_item' =>'Edit Job',
 			  'all_items'=> 'All Jobs',
