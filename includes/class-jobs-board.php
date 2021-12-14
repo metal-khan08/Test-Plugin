@@ -190,7 +190,9 @@ class Jobs_Board {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		//createing short code hook for the data
-		$this->loader->add_shortcode( 'shortcode1', $plugin_public, 'public_hello_world' );
+		$this->loader->add_shortcode( 'jobs-board', $plugin_public, 'public_hello_world' );
+		//creatig short code for displaying results
+		$this->loader->add_shortcode( 'jobs-results', $plugin_public, 'jobs_results' );
 
 	}
 

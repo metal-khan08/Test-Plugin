@@ -114,9 +114,9 @@ class Jobs_Board_Public {
 		 <h1>Jobs Board</h1>
 
 		 <div class="contact-form">
-		 <form method="GET" action="GET">
-			 <select id="city">
-			<option value="city">Select City</option>
+		 <form method="GET" action="<?php site_url() ?>/results">
+			 <select id="city" name="city">
+			<option value="city" >Select City</option>
 				 <?php
 		$cityarray=array();
 		while($query->have_posts()) {
@@ -125,7 +125,7 @@ class Jobs_Board_Public {
 		$jcity= get_post_meta( $jobid, 'meta_location', true);
 		if(in_array($jcity,$cityarray) == false){
 		?>
-				<option id="<?php echo $jcity; ?>" name="<?php echo $jcity; ?>" value="<?php echo $jcity; ?>"><?php echo $jcity; ?></option>
+				<option value="<?php echo $jcity; ?>"><?php echo $jcity; ?></option>
 			<?php 
 			array_push($cityarray,$jcity);
 			}
@@ -133,8 +133,8 @@ class Jobs_Board_Public {
 			</select>
 
 		<!-- select job type category -->
-			 <select id="type">
-			 <option value="type">Select Category</option>
+			 <select id="jtype" name="jtype">
+			 <option value="category">Select Category</option>
 				 <?php
 		while($query->have_posts()) {
 		$query->the_post() ;
@@ -142,7 +142,7 @@ class Jobs_Board_Public {
 				 $jobtax = wp_get_post_terms( $jobid, 'jobs');
 				 foreach($jobtax as $jobtax) {
 					$url = get_term_link($jobtax->slug, 'jobs');
-					echo 	'<option name="'. $jobtax->name .'" id="'. $jobtax->name .'">'. $jobtax->name .'</option>';					
+					echo 	'<option value="'.$jobtax->name .'">'. $jobtax->name .'</option>';					
 				 }			
 				  } ?>
 					</select>
@@ -157,7 +157,7 @@ class Jobs_Board_Public {
 				 <div class="space-div"></div>
 
 		<h2>Available Jobs</h2	>
-<?php
+ <?php
 		wp_reset_postdata();
 
 		//this is to show three jobs at the bottom
@@ -174,36 +174,69 @@ class Jobs_Board_Public {
 			<ul>
 				<li><?php the_title() ?></li>
 			</ul>
-<?php	 }	
+ <?php	 }	
 		wp_reset_postdata()	;
 
+	}
+	 
 
-			//on GO! button
-	$theaction= null;
-	if(isset($_GET['action'])){
-		
+	//results page filter
+	function jobs_results(){
+
+		$jobcity=$_GET["city"];
+		$typeOfJob=$_GET["jtype"];
+
+		//meta query for the job page
 		$args = array(
 			'post_type'      => 'jobs',
 			'posts_per_page' => '-1',
 			'publish_status' => 'published',
-		 );
-		 $query = new WP_Query($args); 
-	
-		$cityarray=array();
+			 );
+				
+		 $query = new WP_Query($args);
 		while($query->have_posts()) {
-		$query->the_post();
-		$jobid=get_the_ID();
+		$query->the_post() ;
+		$jobid=get_the_ID(); 
 		$jcity= get_post_meta( $jobid, 'meta_location', true);
-		// if(in_array($jcity,$cityarray) == false){
+		$jobtax = wp_get_post_terms( $jobid, 'jobs');
+				if($jobcity == $jcity){
+
+					foreach($jobtax as $jobtax) {
+						if($jobtax->name == $typeOfJob){ ?>
+							<div>
+							<li><?php the_title(); ?></li>
+							</div>
+						<?php } elseif ($typeOfJob == 'category') { ?>
+							<div>
+							<li><?php the_title(); ?></li>
+							</div>
+						<?php }
+
+						else{?>
+							<div>
+							<li>No job Found</li>
+							</div>
+						<?php }
+				}					
+			 }
+			  elseif($jobcity == 'city'){
+
+				foreach($jobtax as $jobtax) {
+					if($jobtax->name == $typeOfJob){ ?>
+						<div>
+						<li><?php the_title(); ?></li>
+						</div>
+					<?php }
+					else{ ?>
+						<div>
+						<li>No job Found</li>
+						</div>
+					<?php } 
+			}					
+		 }	
+	}	
+				wp_reset_postdata()	;
 		
-		// 	}
-		the_title();
-		get_post_permalink();
-
-		} 
-
-	}
-	 
 	}
 
 }
