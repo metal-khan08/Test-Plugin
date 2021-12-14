@@ -181,7 +181,6 @@ class Jobs_Board_Public {
 
 	}
 	 
-
 	//call back for the results page filter
 	function jobs_results(){
 

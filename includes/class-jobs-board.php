@@ -157,16 +157,16 @@ class Jobs_Board {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
-		//adding custom post type
+		//adding custom post type the call back functiom is on the admin/class-jobs-board-admin.php
 		$this->loader->add_action( 'init', $plugin_admin, 'create_jobsboard_cpt' );
 		
-		//adding meta box
+		//adding meta box the call back funtcion is on the admin/class-jobs-board-admin.php
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'location_metabox' );
 
-		//adding a taxonomy
+		//adding a taxonomy the call back function is on the admin/class-jobs-board-admin.php
 		$this->loader->add_action( 'init', $plugin_admin, 'job_boards_taxonomy' );
 
-		//saving the post data
+		//saving the post data the call back function is on the admin/class-jobs-board-admin.php
 		$this->loader->add_action( 'save_post', $plugin_admin, 'pdetails_save' );
 
 		
@@ -189,9 +189,9 @@ class Jobs_Board {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
-		//short code for the jobs board main page
+		//short code for the jobs board main page the call back function is on the pulic/class-jobs-board-public.php
 		$this->loader->add_shortcode( 'jobs-board', $plugin_public, 'public_hello_world' );
-		//short code for the results page of the Jobs board
+		//short code for the results page of the Jobs board the call back function is on the pulic/class-jobs-board-public.php
 		$this->loader->add_shortcode( 'jobs-results', $plugin_public, 'jobs_results' );
 
 	}
