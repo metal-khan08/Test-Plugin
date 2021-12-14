@@ -106,6 +106,8 @@ class Jobs_Board_Admin {
 	 * @since    1.0.0
 	 */
 
+
+	 // creating Jobs board custom Post type
 	function create_jobsboard_cpt() {
 
 		$labels = array(
@@ -205,10 +207,6 @@ class Jobs_Board_Admin {
 			'rewrite' => array( 'slug' => 'topic' ),
 		  ));
 	}
-
-		//creating short code call back function
-
-		
 
 
 }

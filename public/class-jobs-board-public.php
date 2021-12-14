@@ -100,10 +100,12 @@ class Jobs_Board_Public {
 
 	}
 
-	//short code to display jobs on the page
+	// call back function to display jobs board
 	function public_hello_world(){
 
-		//this is to show the option on the above for all the jobs
+		//this is to show the form to filter the jobs on the above
+
+		//creating custom query
 		$args = array(
 			'post_type'      => 'jobs',
 			'posts_per_page' => '-1',
@@ -180,13 +182,13 @@ class Jobs_Board_Public {
 	}
 	 
 
-	//results page filter
+	//call back for the results page filter
 	function jobs_results(){
 
 		$jobcity=$_GET["city"];
 		$typeOfJob=$_GET["jtype"];
 
-		//meta query for the job page
+		//meta query for the job results page
 		$args = array(
 			'post_type'      => 'jobs',
 			'posts_per_page' => '-1',

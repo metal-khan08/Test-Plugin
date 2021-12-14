@@ -13,7 +13,7 @@
  */
 
 
- //fetch the vale from the database and saved in to variables
+ //fetch the value from the database and saved in to variables
 global $post;
 $data =get_post_custom( $post->ID );
 $locval=isset($data['meta_location']) ? esc_attr( $data['meta_location'][0] ):'no value';
