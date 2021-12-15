@@ -167,7 +167,7 @@ class Jobs_Board_Admin {
 			return $post->ID ;
 		}
 
-		update_post_meta($post->ID, "meta_location", $_POST["meta_location"] );
+		update_post_meta($post->ID, "meta_job_location", $_POST["meta_job_location"] );
 		update_post_meta($post->ID, "meta_number", $_POST["meta_number"] );
 		update_post_meta($post->ID, "meta_timings", $_POST["meta_timings"] );
 		update_post_meta($post->ID, "custom_benefits", $_POST["custom_benefits"] );

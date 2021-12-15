@@ -136,7 +136,7 @@ class Jobs_Board_Public {
 		while($query->have_posts()) {
 		$query->the_post();
 		$jobid=get_the_ID();
-		$jcity= get_post_meta( $jobid, 'meta_location', true);
+		$jcity= get_post_meta( $jobid, 'meta_job_location', true);
 		if(in_array($jcity,$cityarray) == false){
 		?>
 				<option value="<?php echo $jcity; ?>"><?php echo $jcity; ?></option>
@@ -150,13 +150,16 @@ class Jobs_Board_Public {
 			 <select id="jtype" name="jtype">
 			 <option value="category">Select Category</option>
 				 <?php
+		$categoryarray=array();
 		while($query->have_posts()) {
 		$query->the_post() ;
 		$jobid=get_the_ID();
 				 $jobtax = wp_get_post_terms( $jobid, 'jobs');
 				 foreach($jobtax as $jobtax) {
-					$url = get_term_link($jobtax->slug, 'jobs');
-					echo 	'<option value="'.$jobtax->name .'">'. $jobtax->name .'</option>';					
+					 if(in_array($jobtax->name,$categoryarray) == false){
+					echo 	'<option value="'. $jobtax->name .'">'. $jobtax->name .'</option>';
+					array_push($categoryarray,$jobtax->name);		
+					 }			
 				 }			
 				  } ?>
 					</select>
@@ -192,7 +195,7 @@ class Jobs_Board_Public {
 			while($query->have_posts()) {
 			$query->the_post() ;
 			$jobid=get_the_ID(); 
-			$jcity= get_post_meta( $jobid, 'meta_location', true);
+			$jcity= get_post_meta( $jobid, 'meta_job_location', true);
 			$jobtax = wp_get_post_terms( $jobid, 'jobs');
 					if($jobcity == $jcity){
 	
@@ -236,9 +239,11 @@ class Jobs_Board_Public {
 		 $query = new WP_Query($args);
 		while($query->have_posts()) {
 		$query->the_post() ;
+		$jcity= get_post_meta( $jobid, 'meta_job_location', true);
 		$jobid=get_the_ID(); ?>
 			<ul>
-				<li><?php the_title() ?></li>
+				<li><a href="<?php the_permalink() ?>"><?php the_title() ?></a></li>
+				<li><?php echo "City is " . $jcity; ?></li>
 			</ul>
  <?php	 }	
 		wp_reset_postdata()	;

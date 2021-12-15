@@ -4,12 +4,11 @@
 if(isset($_POST["submit"]))
 {   
 
-    
-    echo $applicationName;
 
     insert_new_application_function();
     return 'data entered succefuly';
 } 
+
 ?>
 
 <h1>Apply Now</h1>
@@ -38,7 +37,7 @@ format: 123-45-678<br>
 <?php
 
 function insert_new_application_function(){
-
+  
     if ( !isset($_POST['fname']) ) {
         return;
     }
@@ -57,7 +56,7 @@ function insert_new_application_function(){
         'post_type' 	=> 'application'
 
     );
-
+    $file_name = $_FILES['file']['name'];
     $application_id = wp_insert_post($post);
         update_post_meta($application_id, "fname", $_POST["fname"] );
 		update_post_meta($application_id, "sname", $_POST["sname"] );
@@ -67,7 +66,7 @@ function insert_new_application_function(){
         update_post_meta($application_id, "caddress", $_POST["caddress"] );
         update_post_meta($application_id, "resume", $_POST["resume"] );
 
-        echo 'your application was added succesfuly';
+        echo 'your application was added succesfuly <br>';
 }
 
 get_footer();
