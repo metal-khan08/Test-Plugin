@@ -157,10 +157,10 @@ class Jobs_Board {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
-		//adding custom post type the call back functiom is on the admin/class-jobs-board-admin.php
+		//adding custom post type for jobs board the call back function is on the admin/class-jobs-board-admin.php
 		$this->loader->add_action( 'init', $plugin_admin, 'create_jobsboard_cpt' );
 		
-		//adding meta box the call back funtcion is on the admin/class-jobs-board-admin.php
+		//adding meta box the call back funtcion for jobsboard is on the admin/class-jobs-board-admin.php
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'location_metabox' );
 
 		//adding a taxonomy the call back function is on the admin/class-jobs-board-admin.php
@@ -168,6 +168,14 @@ class Jobs_Board {
 
 		//saving the post data the call back function is on the admin/class-jobs-board-admin.php
 		$this->loader->add_action( 'save_post', $plugin_admin, 'pdetails_save' );
+
+		//adding custom post type for application the call back function is on the admin/class-jobs-board-admin.php
+		$this->loader->add_action( 'init', $plugin_admin, 'application_custom_post_type' );
+
+		//adding meta box the call back funtcion for application is on the admin/class-jobs-board-admin.php
+		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'application_metabox' );
+
+
 
 		
 
@@ -191,8 +199,9 @@ class Jobs_Board {
 
 		//short code for the jobs board main page the call back function is on the pulic/class-jobs-board-public.php
 		$this->loader->add_shortcode( 'jobs-board', $plugin_public, 'public_hello_world' );
-		//short code for the results page of the Jobs board the call back function is on the pulic/class-jobs-board-public.php
-		$this->loader->add_shortcode( 'jobs-results', $plugin_public, 'jobs_results' );
+		
+		//adding the template for single job type
+		$this->loader->add_filter("single_template", $plugin_public, "single_job_template");
 
 	}
 

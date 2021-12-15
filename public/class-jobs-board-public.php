@@ -100,6 +100,18 @@ class Jobs_Board_Public {
 
 	}
 
+		//template for the single job page
+		function single_job_template($single){
+			global $post;
+			if($post->post_type == "jobs"){
+				if(file_exists(plugin_dir_path( __FILE__ ). 'tempelates/single-jobs.php')){
+					return plugin_dir_path( __FILE__ ). 'tempelates/single-jobs.php';
+				}
+			}
+			return $single;
+		}
+	
+
 	// call back function to display jobs board
 	function public_hello_world(){
 
@@ -116,7 +128,7 @@ class Jobs_Board_Public {
 		 <h1>Jobs Board</h1>
 
 		 <div class="contact-form">
-		 <form method="GET" action="<?php site_url() ?>/results">
+		 <form method="GET" action="">
 			 <select id="city" name="city">
 			<option value="city" >Select City</option>
 				 <?php
@@ -150,7 +162,7 @@ class Jobs_Board_Public {
 					</select>
 					<h4>Select Salary Range</h4>
 					<input type="range" />
-					<input type="submit" value="GO!">
+					<input type="submit" name="go" value="GO!">
 		</form>
 		</div>
 
@@ -162,7 +174,59 @@ class Jobs_Board_Public {
  <?php
 		wp_reset_postdata();
 
-		//this is to show three jobs at the bottom
+		
+		//get the action
+
+		if(isset($_GET['go'])){
+			$jobcity=$_GET["city"];
+			$typeOfJob=$_GET["jtype"];
+	
+			//meta query for the job results page
+			$args = array(
+				'post_type'      => 'jobs',
+				'posts_per_page' => '-1',
+				'publish_status' => 'published',
+				 );
+					
+			 $query = new WP_Query($args);
+			while($query->have_posts()) {
+			$query->the_post() ;
+			$jobid=get_the_ID(); 
+			$jcity= get_post_meta( $jobid, 'meta_location', true);
+			$jobtax = wp_get_post_terms( $jobid, 'jobs');
+					if($jobcity == $jcity){
+	
+						foreach($jobtax as $jobtax) {
+							if($jobtax->name == $typeOfJob){ ?>
+								<div>
+								<li><a href="<?php the_permalink() ?>"><?php the_title(); ?></a></li>
+								<li><?php echo "City is " . $jcity; ?></li>								
+								</div>
+							<?php } elseif ($typeOfJob == 'category') { ?>
+								<div>
+								<li><a href="<?php the_permalink() ?>"><?php the_title(); ?></a></li>
+								<li><?php echo "City is " . $jcity; ?></li>
+								</div>
+							<?php }
+	
+					}					
+				 }
+				  elseif($jobcity == 'city'){
+	
+					foreach($jobtax as $jobtax) {
+						if($jobtax->name == $typeOfJob){ ?>
+							<div>
+							<li><a href="<?php the_permalink() ?>"><?php the_title(); ?></a></li>
+							<li><?php echo "City is " . $jcity; ?></li>
+							</div>
+						<?php }
+						
+				}					
+			 }	
+		}	
+					wp_reset_postdata()	;
+		} else {
+			//this is to show three jobs at the bottom
 		$args = array(
 			'post_type'      => 'jobs',
 			'posts_per_page' => '3',
@@ -179,65 +243,11 @@ class Jobs_Board_Public {
  <?php	 }	
 		wp_reset_postdata()	;
 
+		}
+
+
+
 	}
 	 
-	//call back for the results page filter
-	function jobs_results(){
-
-		$jobcity=$_GET["city"];
-		$typeOfJob=$_GET["jtype"];
-
-		//meta query for the job results page
-		$args = array(
-			'post_type'      => 'jobs',
-			'posts_per_page' => '-1',
-			'publish_status' => 'published',
-			 );
-				
-		 $query = new WP_Query($args);
-		while($query->have_posts()) {
-		$query->the_post() ;
-		$jobid=get_the_ID(); 
-		$jcity= get_post_meta( $jobid, 'meta_location', true);
-		$jobtax = wp_get_post_terms( $jobid, 'jobs');
-				if($jobcity == $jcity){
-
-					foreach($jobtax as $jobtax) {
-						if($jobtax->name == $typeOfJob){ ?>
-							<div>
-							<li><?php the_title(); ?></li>
-							</div>
-						<?php } elseif ($typeOfJob == 'category') { ?>
-							<div>
-							<li><?php the_title(); ?></li>
-							</div>
-						<?php }
-
-						else{?>
-							<div>
-							<li>No job Found</li>
-							</div>
-						<?php }
-				}					
-			 }
-			  elseif($jobcity == 'city'){
-
-				foreach($jobtax as $jobtax) {
-					if($jobtax->name == $typeOfJob){ ?>
-						<div>
-						<li><?php the_title(); ?></li>
-						</div>
-					<?php }
-					else{ ?>
-						<div>
-						<li>No job Found</li>
-						</div>
-					<?php } 
-			}					
-		 }	
-	}	
-				wp_reset_postdata()	;
-		
-	}
-
+	
 }

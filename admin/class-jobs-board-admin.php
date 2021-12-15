@@ -118,7 +118,7 @@ class Jobs_Board_Admin {
 			  'Singular_name'=> 'Job'
 		);
 		$args = array(
-			'label' => __( 'Jobs Board', 'textdomain' ),
+			'label' => __( 'jobs_board', 'textdomain' ),
 			'description' => __( 'A detail of the jobs available', 'textdomain' ),
 			'labels' => $labels,
 			'menu_icon' => 'dashicons-businessman',
@@ -138,7 +138,8 @@ class Jobs_Board_Admin {
 		register_post_type( 'jobs', $args );
 	}
 
-	//adding metaboxes metabox
+
+	//adding metaboxes for jobs board metabox
 
 	function location_metabox(){
 		add_meta_box(
@@ -208,5 +209,56 @@ class Jobs_Board_Admin {
 		  ));
 	}
 
+	// custo post type for application
+	function application_custom_post_type(){
+		
+		$applabels = array(
+			'name' =>'Application',
+			  'add_new_item' =>'New Application',
+			  'edit_item' =>'Edit Application',
+			  'all_items'=> 'All Applications',
+			  'Singular_name'=> 'Application'
+		);
+		$appargs = array(
+			'label' => __( 'Application', 'textdomain' ),
+			'labels' => $applabels,
+			'menu_icon' => 'dashicons-portfolio',
+			'supports' => array('title'),
+			'taxonomies' => array(),
+			'public' => true,
+			'show_ui' => true,
+			'show_in_menu' => true,
+			'menu_position' => 5,
+			'show_in_admin_bar' => true,
+			'show_in_nav_menus' => true,
+			'has_archive' => true,
+			'hierarchical' => false,
+			'show_in_rest' => true,
+			'capability_type' => 'post',
+		);
+		register_post_type( 'application', $appargs );
+	
+	}
+
+
+	//adding metaboxes for application metabox
+
+	function application_metabox(){
+		add_meta_box(
+			'appdetails',
+			'Application Details',
+			 array($this,'application_meta_input_box'),
+			'application',
+			'normal',
+			'default'
+		);
+    
+	}
+
+	//call back funtion for the application metabox
+
+	function application_meta_input_box(){ 
+		require_once 'partials/jobs-board-admin-display-application-cmb.php';
+	}
 
 }

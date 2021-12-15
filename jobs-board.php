@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       Jobs Board
  * Plugin URI:        abc.com
- * Description:       Create a results page in the pages and paste the shotcode [jobs-results] in it and then paste the short code [jobs-board] on the page you want to display the Jobs Board
+ * Description:       paste the short code [jobs-board] on the page you want to display the Jobs Board
  * Version:           1.0.0
  * Author:            Talha
  * Author URI:        def.com
