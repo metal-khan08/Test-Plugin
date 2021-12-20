@@ -97,6 +97,7 @@ class Jobs_Board_Public {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/jobs-board-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script('jquery-form');	
 
 	}
 
@@ -249,10 +250,14 @@ class Jobs_Board_Public {
 		wp_reset_postdata()	;
 
 		}
-
-
-
 	}
 	 
 	
+	//function for the ajax request
+
+	// function create_applicant(){
+	// 	wp_send_json_success( array('POST'=> $_POST, 'FILES' =>$_FILES));
+		
+	// }
+
 }

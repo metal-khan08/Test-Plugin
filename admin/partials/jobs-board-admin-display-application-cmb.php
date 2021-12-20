@@ -22,7 +22,10 @@ $bdateval=isset($data['birthdate']) ? esc_attr( $data['birthdate'][0] ):'no valu
 $emailval=isset($data['email']) ? esc_attr( $data['email'][0] ):'no value';
 $pnumberval=isset($data['pnumber']) ? esc_attr( $data['pnumber'][0] ):'no value';
 $caddresslval=isset($data['caddress']) ? esc_attr( $data['caddress'][0] ):'no value';
- ?>
+$jobname=isset($data['jobname']) ? esc_attr( $data['jobname'][0] ):'no value';
+$personResume=isset($data['resume']) ? esc_attr( $data['resume'][0] ):'no value';
+?>
+
 
 
 
@@ -39,7 +42,10 @@ $caddresslval=isset($data['caddress']) ? esc_attr( $data['caddress'][0] ):'no va
     <input type="text" name="pnumber" id="pnumber" value="<?php echo $pnumberval; ?>"/><br>
     <label for="caddress">Complete Address</label><br>
     <input type="text" name="caddress" id="caddress" value="<?php echo $caddresslval; ?>"/><br>
+    the name of the job applied is <?php echo $jobname; ?>
  </ul>
+    
+<?php
 
-
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->
+$resumeurl =$personResume;
+echo $resumeurl;

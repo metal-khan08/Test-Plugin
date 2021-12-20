@@ -203,6 +203,10 @@ class Jobs_Board {
 		//adding the template for single job type
 		$this->loader->add_filter("single_template", $plugin_public, "single_job_template");
 
+		//ajax action for application form
+		$this->loader->add_action("wp_ajax_create_applicant", $plugin_public, "create_applicant");
+
+
 	}
 
 	/**

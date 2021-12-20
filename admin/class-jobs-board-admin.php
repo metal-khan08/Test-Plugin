@@ -121,7 +121,7 @@ class Jobs_Board_Admin {
 			'label' => __( 'jobs_board', 'textdomain' ),
 			'description' => __( 'A detail of the jobs available', 'textdomain' ),
 			'labels' => $labels,
-			'menu_icon' => 'dashicons-businessman',
+			'menu_icon' => 'dashicons-groups',
 			'supports' => array('title'),
 			'taxonomies' => array(),
 			'public' => true,
