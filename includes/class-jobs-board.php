@@ -198,7 +198,7 @@ class Jobs_Board {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		//short code for the jobs board main page the call back function is on the pulic/class-jobs-board-public.php
-		$this->loader->add_shortcode( 'jobs-board', $plugin_public, 'public_hello_world' );
+		$this->loader->add_shortcode( 'jobs-board', $plugin_public, 'jobs_board_call_back_function' );
 		
 		//adding the template for single job type
 		$this->loader->add_filter("single_template", $plugin_public, "single_job_template");
