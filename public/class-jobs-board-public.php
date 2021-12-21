@@ -250,7 +250,7 @@ class Jobs_Board_Public {
 			}
 			else if(empty($jobcity) && empty($typeOfJob)){ ?>
 				<ul>
-					<li>No Job selected</li>
+					<li>No Type or City selected</li>
 				</ul>
 			 <?php }
 
