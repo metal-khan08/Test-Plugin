@@ -150,27 +150,41 @@ class Jobs_Board_Admin {
 			'side',
 			'low'
 		);
-    
 	}
 
 	//call back funtion for the metabox
 
-	function location_meta_input_box(){ 
-		require_once 'partials/jobs-board-admin-display.php';
+	function location_meta_input_box($post){ 
+		
+		//fetch the value from the database and saved in to variables
+			$jobpostId =$post->ID;
+			$locval=get_post_meta($jobpostId, 'meta_job_location', true );
+			$salval=get_post_meta($jobpostId, 'meta_number', true );
+			$timval=get_post_meta($jobpostId, 'meta_timings', true );
+			$benval=get_post_meta($jobpostId, 'custom_benefits', true );
+			?>
+
+			<!-- this the fields of meta box -->
+			<ul>
+				<h3>Location</h3>
+				<input type="text" name="meta_job_location" id="meta_job_location" value="<?php echo $locval?>"/>
+				<h3>Salary</h3>
+				<input type="range" min="10000" max="100000" name="meta_number" id="meta_number" value="<?php echo $salval ?>"/>
+				<h3>Timings</h3>
+				<input type="text" name="meta_timings" id="meta_timings" value="<?php echo $timval ?>"/>
+				<h3>Benefits</h3>
+				<input type="text" name="custom_benefits" id="custom_benefits" value="<?php echo $benval ?>"/>
+			</ul>
+			<?php
 	}
 
 	//saving data into the data base
 
-	function pdetails_save(){
-		global $post;
-		if(defined('DOING_AUTOSAVE')&& DOING_ATUOSAVE){
-			return $post->ID ;
-		}
-
-		update_post_meta($post->ID, "meta_job_location", $_POST["meta_job_location"] );
-		update_post_meta($post->ID, "meta_number", $_POST["meta_number"] );
-		update_post_meta($post->ID, "meta_timings", $_POST["meta_timings"] );
-		update_post_meta($post->ID, "custom_benefits", $_POST["custom_benefits"] );
+	function pdetails_save($post_id){
+		update_post_meta($post_id, "meta_job_location", $_POST["meta_job_location"] );
+		update_post_meta($post_id, "meta_number", $_POST["meta_number"] );
+		update_post_meta($post_id, "meta_timings", $_POST["meta_timings"] );
+		update_post_meta($post_id, "custom_benefits", $_POST["custom_benefits"] );
 	}
 	
 
@@ -179,20 +193,6 @@ class Jobs_Board_Admin {
 	function job_boards_taxonomy(){
 		$labels = array(
 			'name' =>  'Job Category',
-			'singular_name' =>  'job',
-			'search_items' =>  __( 'Search jobs' ),
-			'popular_items' => __( 'Popular jobs' ),
-			'all_items' => __( 'All jobs' ),
-			'parent_item' => null,
-			'parent_item_colon' => null,
-			'edit_item' => __( 'Edit job' ), 
-			'update_item' => __( 'Update job' ),
-			'add_new_item' => __( 'Add New job' ),
-			'new_item_name' => __( 'New job Name' ),
-			'separate_items_with_commas' => __( 'Separate jobs with commas' ),
-			'add_or_remove_items' => __( 'Add or remove jobs' ),
-			'choose_from_most_used' => __( 'Choose from the most used jobs' ),
-			'menu_name' => __( 'Jobs' ),
 		  ); 
 		 
 		// Now register the non-hierarchical taxonomy like tag
@@ -255,10 +255,44 @@ class Jobs_Board_Admin {
     
 	}
 
+
 	//call back funtion for the application metabox
 
-	function application_meta_input_box(){ 
-		require_once 'partials/jobs-board-admin-display-application-cmb.php';
+	function application_meta_input_box($post){ 
+
+			//fetch the value from the database and saved in to variables
+			$postId =$post->ID;
+			$fnameval=get_post_meta($postId, 'fname', true );
+			$snameval=get_post_meta( $postId, 'sname', true );
+			$bdateval=get_post_meta( $postId, 'birthdate', true );
+			$emailval=get_post_meta( $postId, 'email', true );
+			$pnumberval=get_post_meta( $postId, 'pnumber', true );
+			$caddresslval=get_post_meta( $postId, 'caddress' , true);
+			$jobname=get_post_meta( $postId, 'jobname', true );
+			$personResume=get_post_meta( $postId, 'resume', true );
+
+			$personResume=isset($data['resume']) ? esc_attr( $data['resume'][0] ):'no value';
+			?>
+
+			<!-- this the fields of meta box -->
+			<ul>
+				<label for="name">Full Name</label><br>
+				<input type="text" name="fname" id="name" value="<?php echo $fnameval; ?>" placeholder="First name" /><input type="text" name="sname" id="name" value="<?php echo $snameval; ?>" placeholder="second name"/><br>
+				<label for="birthdate">Birth date</label><br>
+				<input type="date" id="birthdate" name="birthdate" value="<?php echo $bdateva; ?>"/><br>
+				<label for="email">Email Address</label><br>
+				<input type="text" name="email" id="email" value="<?php echo $emailval; ?>"/><br>
+				<label for="pnumber">Phone Number</label><br>
+				<input type="text" name="pnumber" id="pnumber" value="<?php echo $pnumberval; ?>"/><br>
+				<label for="caddress">Complete Address</label><br>
+				<input type="text" name="caddress" id="caddress" value="<?php echo $caddresslval; ?>"/><br>
+				the name of the job applied is <?php echo $jobname; ?>
+			</ul>
+				
+			<?php
+			$resumeurl =$personResume;
+			echo $resumeurl;
+					
 	}
 
 }

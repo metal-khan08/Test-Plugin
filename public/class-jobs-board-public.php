@@ -121,8 +121,7 @@ class Jobs_Board_Public {
 		//creating custom query
 		$args = array(
 			'post_type'      => 'jobs',
-			'posts_per_page' => '-1',
-			'publish_status' => 'published',
+			'posts_per_page' => '-1'
 		 );
 		 $query = new WP_Query($args); ?>
 
@@ -131,7 +130,7 @@ class Jobs_Board_Public {
 		 <div class="contact-form">
 		 <form method="GET" action="">
 			 <select id="city" name="city">
-			<option value="city" >Select City</option>
+			<option value="" >Select City</option>
 				 <?php
 		$cityarray=array();
 		while($query->have_posts()) {
@@ -140,7 +139,7 @@ class Jobs_Board_Public {
 		$jcity= get_post_meta( $jobid, 'meta_job_location', true);
 		if(in_array($jcity,$cityarray) == false){
 		?>
-				<option value="<?php echo $jcity; ?>"><?php echo $jcity; ?></option>
+				<option><?php echo $jcity; ?></option>
 			<?php 
 			array_push($cityarray,$jcity);
 			}
@@ -149,7 +148,7 @@ class Jobs_Board_Public {
 
 		<!-- select job type category -->
 			 <select id="jtype" name="jtype">
-			 <option value="category">Select Category</option>
+			 <option value="" >Select Category</option>
 				 <?php
 		$categoryarray=array();
 		while($query->have_posts()) {
@@ -166,7 +165,7 @@ class Jobs_Board_Public {
 					</select>
 					<h4>Select Salary Range</h4>
 					<input type="range" />
-					<input type="submit" name="go" value="GO!">
+					<input type="submit" name="go"  >
 		</form>
 		</div>
 
@@ -178,63 +177,57 @@ class Jobs_Board_Public {
  <?php
 		wp_reset_postdata();
 
-		
 		//get the action
 
-		if(isset($_GET['go'])){
+		if($_GET['go']){
 			$jobcity=$_GET["city"];
 			$typeOfJob=$_GET["jtype"];
+
+
+
+			$meta_query = array(
+				'relation' => 'AND',
+				array(
+					'key'     => 'meta_job_location',
+					'value'   => $jobcity,
+					'compare' => '=',
+				),
+				
+			);
 	
 			//meta query for the job results page
+			if(!empty($jobcity) && !empty($typeOfJob)) {
 			$args = array(
-				'post_type'      => 'jobs',
-				'posts_per_page' => '-1',
-				'publish_status' => 'published',
+				
+				'post_type'   => 'jobs',
+				'meta_query'  =>$meta_query
 				 );
 					
 			 $query = new WP_Query($args);
 			while($query->have_posts()) {
 			$query->the_post() ;
-			$jobid=get_the_ID(); 
-			$jcity= get_post_meta( $jobid, 'meta_job_location', true);
-			$jobtax = wp_get_post_terms( $jobid, 'jobs');
-					if($jobcity == $jcity){
-	
-						foreach($jobtax as $jobtax) {
-							if($jobtax->name == $typeOfJob){ ?>
-								<div>
-								<li><a href="<?php the_permalink() ?>"><?php the_title(); ?></a></li>
-								<li><?php echo "City is " . $jcity; ?></li>								
-								</div>
-							<?php } elseif ($typeOfJob == 'category') { ?>
-								<div>
-								<li><a href="<?php the_permalink() ?>"><?php the_title(); ?></a></li>
-								<li><?php echo "City is " . $jcity; ?></li>
-								</div>
-							<?php }
-	
-					}					
-				 }
-				  elseif($jobcity == 'city'){
-	
-					foreach($jobtax as $jobtax) {
-						if($jobtax->name == $typeOfJob){ ?>
-							<div>
-							<li><a href="<?php the_permalink() ?>"><?php the_title(); ?></a></li>
-							<li><?php echo "City is " . $jcity; ?></li>
-							</div>
-						<?php }
-						
-				}					
-			 }	
+
+			the_title();
+					
 		}	
 					wp_reset_postdata()	;
-		} else {
+		} 
+		
+			else if(!empty($jobcity)){
+
+
+			}
+
+			else if(!empty($typeOfJob)){
+
+				
+			}
+
+		else  {
 			//this is to show three jobs at the bottom
 		$args = array(
 			'post_type'      => 'jobs',
-			'posts_per_page' => '3',
-			'publish_status' => 'published',
+			'posts_per_page' => '3'
 		 );
 		
 		 $query = new WP_Query($args);
@@ -260,4 +253,5 @@ class Jobs_Board_Public {
 		
 	// }
 
+}
 }
