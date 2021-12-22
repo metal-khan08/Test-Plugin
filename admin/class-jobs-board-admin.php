@@ -286,10 +286,10 @@ class Jobs_Board_Admin {
 				<input type="text" name="caddress" id="caddress" value="<?php echo $caddresslval; ?>"/><br>
 				the name of the job applied is <?php echo $jobname; ?>
 			</ul>
-				
 			<?php
 		  $resumeUrl= $personResume['url']; ?>
-		  click to download resume <button><a download="resume" href="<?php echo $resumeUrl; ?>">Download Resume</a></button>
+		  click to download resume <button><a download="<?php echo $fnameval; ?> resume" href="<?php echo $resumeUrl; ?>">Download Resume</a></button>
+	
 	<?php }
 
 }
