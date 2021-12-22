@@ -140,7 +140,6 @@ class Jobs_Board_Public {
 			}
 		} ?>
 			</select>
-
 		<!-- select job type category -->
 			 <select id="jtype" name="jtype">
 			 <option value="" >Select Category</option>

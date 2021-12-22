@@ -109,7 +109,6 @@ class Jobs_Board_Admin {
 
 	 // creating Jobs board custom Post type
 	function create_jobsboard_cpt() {
-
 		$labels = array(
 			'name' =>'Jobs Board',
 			  'add_new_item' =>'New Job',
@@ -138,9 +137,7 @@ class Jobs_Board_Admin {
 		register_post_type( 'jobs', $args );
 	}
 
-
 	//adding metaboxes for jobs board metabox
-
 	function location_metabox(){
 		add_meta_box(
 			'pdetails',
@@ -153,10 +150,6 @@ class Jobs_Board_Admin {
 	}
 
 	//call back funtion for the metabox
-
-	
-	
-
 	function location_meta_input_box($post){ 
 		$jobpostId= $post->ID;
 			?>
@@ -175,36 +168,25 @@ class Jobs_Board_Admin {
 			<?php
 	}
 	function pdetails_save($post_id){
-		
+		//saving the meta data into individual variables 
 		$jobLocation=isset($_POST["meta_job_location"]) ? $_POST["meta_job_location"] : 'Enter Location';
 		$jobSalary= isset($_POST["meta_number"]) ? $_POST["meta_number"] : 'Enter Salary';
 		$jobTimings=isset($_POST["meta_timings"]) ? $_POST["meta_timings"] : 'Enter Timings';
 		$jobBenefits=isset($_POST["custom_benefits"]) ? $_POST["custom_benefits"] : 'No benefits';
-
-
+		//updating the data into the database using the above captured values
 		update_post_meta($post_id, "meta_job_location",$jobLocation  );
 		update_post_meta($post_id, "meta_number",$jobSalary );
 		update_post_meta($post_id, "meta_timings", $jobTimings );
 		update_post_meta($post_id, "custom_benefits",  $jobBenefits);
-
 		}
 
-		
-	
-
-	//saving data into the data base
-
-	
-
 	// adding custom taxonomy
-
 	function job_boards_taxonomy(){
 		$labels = array(
 			'name' =>  'Job Category',
-		  ); 
+	); 
 		 
 		// Now register the non-hierarchical taxonomy like tag
-		 
 		  register_taxonomy('jobs','jobs',array(
 			'hierarchical' => false,
 			'labels' => $labels,
@@ -219,7 +201,6 @@ class Jobs_Board_Admin {
 
 	// custo post type for application
 	function application_custom_post_type(){
-		
 		$applabels = array(
 			'name' =>'Application',
 			  'add_new_item' =>'New Application',
@@ -245,12 +226,9 @@ class Jobs_Board_Admin {
 			'capability_type' => 'post',
 		);
 		register_post_type( 'application', $appargs );
-	
 	}
 
-
 	//adding metaboxes for application metabox
-
 	function application_metabox(){
 		add_meta_box(
 			'appdetails',
@@ -260,14 +238,10 @@ class Jobs_Board_Admin {
 			'normal',
 			'default'
 		);
-    
 	}
 
-
 	//call back funtion for the application metabox
-
 	function application_meta_input_box($post){ 
-
 			//fetch the value from the database and saved in to variables
 			$postId =$post->ID;
 			$fnameval=get_post_meta($postId, 'fname', true );
@@ -279,7 +253,6 @@ class Jobs_Board_Admin {
 			$jobname=get_post_meta( $postId, 'jobname', true );
 			$personResume=get_post_meta( $postId, 'resume', true);
 			?>
-
 			<!-- this the fields of meta box -->
 			<ul>
 				<label for="name">Full Name</label><br>
@@ -297,7 +270,6 @@ class Jobs_Board_Admin {
 			<?php
 		  $resumeUrl= $personResume['url']; ?>
 		  click to download resume <button><a download="<?php echo $fnameval; ?> resume" href="<?php echo $resumeUrl; ?>">Download Resume</a></button>
-	
 	<?php }
 
 }
