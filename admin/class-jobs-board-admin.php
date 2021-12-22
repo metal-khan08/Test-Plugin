@@ -269,9 +269,7 @@ class Jobs_Board_Admin {
 			$pnumberval=get_post_meta( $postId, 'pnumber', true );
 			$caddresslval=get_post_meta( $postId, 'caddress' , true);
 			$jobname=get_post_meta( $postId, 'jobname', true );
-			$personResume=get_post_meta( $postId, 'resume', true );
-
-			$personResume=isset($data['resume']) ? esc_attr( $data['resume'][0] ):'no value';
+			$personResume=get_post_meta( $postId, 'resume', true);
 			?>
 
 			<!-- this the fields of meta box -->
@@ -290,9 +288,8 @@ class Jobs_Board_Admin {
 			</ul>
 				
 			<?php
-			$resumeurl =$personResume;
-			echo $resumeurl;
-					
-	}
+		  $resumeUrl= $personResume['url']; ?>
+		  click to download resume <button><a download="resume" href="<?php echo $resumeUrl; ?>">Download Resume</a></button>
+	<?php }
 
 }
