@@ -154,38 +154,46 @@ class Jobs_Board_Admin {
 
 	//call back funtion for the metabox
 
-	function location_meta_input_box($post){ 
-		
-		//fetch the value from the database and saved in to variables
-			$jobpostId =$post->ID;
-			$locval=get_post_meta($jobpostId, 'meta_job_location', true );
-			$salval=get_post_meta($jobpostId, 'meta_number', true );
-			$timval=get_post_meta($jobpostId, 'meta_timings', true );
-			$benval=get_post_meta($jobpostId, 'custom_benefits', true );
-			?>
+	
+	
 
+	function location_meta_input_box($post){ 
+		$jobpostId= $post->ID;
+			?>
+		
 			<!-- this the fields of meta box -->
 			<ul>
 				<h3>Location</h3>
-				<input type="text" name="meta_job_location" id="meta_job_location" value="<?php echo $locval?>"/>
+				<input type="text" name="meta_job_location" id="meta_job_location" value="<?php echo get_post_meta($jobpostId, 'meta_job_location', true ); ?>"/>
 				<h3>Salary</h3>
-				<input type="range" min="10000" max="100000" name="meta_number" id="meta_number" value="<?php echo $salval ?>"/>
+				<input type="range" min="10000" max="100000" name="meta_number" id="meta_number" value="<?php echo get_post_meta($jobpostId, 'meta_number', true ); ?>"/>
 				<h3>Timings</h3>
-				<input type="text" name="meta_timings" id="meta_timings" value="<?php echo $timval ?>"/>
+				<input type="text" name="meta_timings" id="meta_timings" value="<?php echo $timval=get_post_meta($jobpostId, 'meta_timings', true ); ?>"/>
 				<h3>Benefits</h3>
-				<input type="text" name="custom_benefits" id="custom_benefits" value="<?php echo $benval ?>"/>
+				<input type="text" name="custom_benefits" id="custom_benefits" value="<?php echo get_post_meta($jobpostId, 'custom_benefits', true ); ?>"/>
 			</ul>
 			<?php
 	}
+	function pdetails_save($post_id){
+		
+		$jobLocation=isset($_POST["meta_job_location"]) ? $_POST["meta_job_location"] : 'Enter Location';
+		$jobSalary= isset($_POST["meta_number"]) ? $_POST["meta_number"] : 'Enter Salary';
+		$jobTimings=isset($_POST["meta_timings"]) ? $_POST["meta_timings"] : 'Enter Timings';
+		$jobBenefits=isset($_POST["custom_benefits"]) ? $_POST["custom_benefits"] : 'No benefits';
+
+
+		update_post_meta($post_id, "meta_job_location",$jobLocation  );
+		update_post_meta($post_id, "meta_number",$jobSalary );
+		update_post_meta($post_id, "meta_timings", $jobTimings );
+		update_post_meta($post_id, "custom_benefits",  $jobBenefits);
+
+		}
+
+		
+	
 
 	//saving data into the data base
 
-	function pdetails_save($post_id){
-		update_post_meta($post_id, "meta_job_location", $_POST["meta_job_location"] );
-		update_post_meta($post_id, "meta_number", $_POST["meta_number"] );
-		update_post_meta($post_id, "meta_timings", $_POST["meta_timings"] );
-		update_post_meta($post_id, "custom_benefits", $_POST["custom_benefits"] );
-	}
 	
 
 	// adding custom taxonomy
@@ -277,7 +285,7 @@ class Jobs_Board_Admin {
 				<label for="name">Full Name</label><br>
 				<input type="text" name="fname" id="name" value="<?php echo $fnameval; ?>" placeholder="First name" /><input type="text" name="sname" id="name" value="<?php echo $snameval; ?>" placeholder="second name"/><br>
 				<label for="birthdate">Birth date</label><br>
-				<input type="date" id="birthdate" name="birthdate" value="<?php echo $bdateva; ?>"/><br>
+				<input type="date" id="birthdate" name="birthdate" value=""/><br>
 				<label for="email">Email Address</label><br>
 				<input type="text" name="email" id="email" value="<?php echo $emailval; ?>"/><br>
 				<label for="pnumber">Phone Number</label><br>

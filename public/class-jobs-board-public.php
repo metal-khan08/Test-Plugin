@@ -175,32 +175,36 @@ class Jobs_Board_Public {
 		//On Go Button
 
 		$isfirst = false;
-
+		$jobcity=isset($_GET["city"]) ? $_GET["city"] : "" ;
+		$typeOfJob=isset($_GET["jtype"]) ? $_GET["jtype"] : "" ;
+		
 		if(isset($_GET['go'])) {
-			$isfirst = true;			
-				$jobcity=$_GET["city"];
-				$typeOfJob=$_GET["jtype"];
-				//meta query for the job results page
-				if(!empty($jobcity) && !empty($typeOfJob)) {
-					
-					$meta_query = array(
-						array(
-							'key'     => 'meta_job_location',
-							'value'   => $jobcity,
-							'compare' => '=',
-						));
-				
-					$args = array(
-					'post_type'   => 'jobs',
-					'meta_query'  =>$meta_query,
-					'tax_query' => array(array(
-						'taxonomy' => 'jobs',
-						'field' => 'slug',
-						'terms' => $typeOfJob
-					))
-					);
-						
-				$query = new WP_Query($args);
+			$isfirst = true;				
+			if(!empty($_GET["city"])) { 
+				$meta_query = array(
+					array(
+						'key'     => 'meta_job_location',
+						'value'   => $jobcity 
+					));
+			} else {
+				$meta_query="" ;
+				}
+			if(!empty($_GET["jtype"]) ){ 
+				$customtax = array(array(
+					'taxonomy' => 'jobs',
+					'field' => 'slug',
+					'terms' => $typeOfJob
+				));
+			} else {
+				$customtax= "" ;
+				}
+
+			$args = array(
+			'post_type'   => 'jobs',
+			'meta_query'  =>$meta_query,
+			'tax_query' =>  $customtax
+			);
+			$query = new WP_Query($args);
 				while($query->have_posts()) {
 				$query->the_post() ;?>
 				<ul>
@@ -208,62 +212,14 @@ class Jobs_Board_Public {
 				</ul>
 				<?php }	
 						wp_reset_postdata()	;
-				} 
-			
-				else if(!empty($jobcity)){
-
-					$meta_query = array(
-						array(
-							'key'     => 'meta_job_location',
-							'value'   => $jobcity,
-							'compare' => '=',
-						));
-				
-					$args = array(
-					'post_type'   => 'jobs',
-					'meta_query'  =>$meta_query
-					);	
-				$query = new WP_Query($args);
-				while($query->have_posts()) {
-				$query->the_post() ; ?>
-				<ul>
-					<li><a href="<?php the_permalink() ?>"><?php the_title() ?></a></li>
-				</ul>
-				<?php }	
-						wp_reset_postdata()	;
-				}
-				else if(!empty($typeOfJob)){
-					$args = array(
-						'post_type'   => 'jobs',
-						'tax_query' => array(array(
-							'taxonomy' => 'jobs',
-							'field' => 'slug',
-							'terms' => $typeOfJob
-						))
-						);		
-					$query = new WP_Query($args);
-					while($query->have_posts()) {
-					$query->the_post() ;?>
-					<ul>
-						<li><a href="<?php the_permalink() ?>"><?php the_title() ?></a></li>
-					</ul>
-				<?php }	
-							wp_reset_postdata()	;	
-				}
-				else if(empty($jobcity) && empty($typeOfJob)){ ?>
-					<ul>
-						<li>No Type or City selected</li>
-					</ul>
-				<?php }
 		}
-
-		if(!$isfirst){
+				//meta query for the job results page		
+				if(!$isfirst){
 						//this is to show three jobs at the bottom
 						$args = array(
 							'post_type'      => 'jobs',
 							'posts_per_page' => '3'
 						);
-						
 						$query = new WP_Query($args);
 						while($query->have_posts()) {
 						$query->the_post() ;
