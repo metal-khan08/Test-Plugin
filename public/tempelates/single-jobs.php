@@ -5,8 +5,8 @@ if(isset($_POST["submit"]))
 
   
     insert_new_application_function();
-    return 'data entered succefuly';
 
+    return;
 
     // global $wpdb;
     // $applicationName = $wpdb->fname;
@@ -54,28 +54,40 @@ function insert_new_application_function(){
         echo 'Please enter a name. Titles must be at least three characters long.';
         return;
     }
-    
-    $applicationName =$_POST["fname"]." ".$_POST["sname"];
-    $post =array(
-        'post_title'    => $applicationName ,
-        'post_status'   => 'publish',   
-        'post_type' 	=> 'application'
-
-    );
+    $supported_types = array('application/pdf');
+    $arr_file_type = wp_check_filetype(basename($_FILES['resume']['name']));
+    $uploaded_type = $arr_file_type['type'];
     $upload = wp_upload_bits($_FILES['resume']['name'], null, file_get_contents($_FILES['resume']['tmp_name']));
-    $application_id = wp_insert_post($post);
-        update_post_meta($application_id, "fname", $_POST["fname"] );
-		update_post_meta($application_id, "sname", $_POST["sname"] );
-		update_post_meta($application_id, "birthdate", $_POST["birthdate"] );
-		update_post_meta($application_id, "email", $_POST["email"] );
-        update_post_meta($application_id, "pnumber", $_POST["pnumber"] );
-        update_post_meta($application_id, "caddress", $_POST["caddress"] );
-        update_post_meta($application_id, "resume", $upload );
-        update_post_meta($application_id, "jobname", get_the_title() );
+       
+    if(in_array($uploaded_type, $supported_types)) {
+        if(isset($upload['error']) && $upload['error'] != 0) {   
+            die('there was an error uploading your file') ;
+        }
+            else{
+                $applicationName =$_POST["fname"]." ".$_POST["sname"];
+                $post =array(
+                    'post_title'    => $applicationName ,
+                    'post_status'   => 'publish',   
+                    'post_type' 	=> 'application'
+                );
+                    $application_id = wp_insert_post($post);
+                    update_post_meta($application_id, "fname", $_POST["fname"] );
+                    update_post_meta($application_id, "sname", $_POST["sname"] );
+                    update_post_meta($application_id, "birthdate", $_POST["birthdate"] );
+                    update_post_meta($application_id, "email", $_POST["email"] );
+                    update_post_meta($application_id, "pnumber", $_POST["pnumber"] );
+                    update_post_meta($application_id, "caddress", $_POST["caddress"] );
+                    update_post_meta($application_id, "resume", $upload );
+                    update_post_meta($application_id, "jobname", get_the_title() );  
+                    
+                    echo '<div style="margin-left:50px;"><h3> Post Submited Successfuly</h3></div>';
+            }
+    } else {
+            die('file type Not supported') ;
+      }
 
+    }
         
-        echo 'your application was added succesfuly <br>';
-}
 
 
 get_footer();

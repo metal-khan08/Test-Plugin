@@ -265,7 +265,7 @@ class Jobs_Board_Admin {
 				<input type="text" name="pnumber" id="pnumber" value="<?php echo $pnumberval; ?>"/><br>
 				<label for="caddress">Complete Address</label><br>
 				<input type="text" name="caddress" id="caddress" value="<?php echo $caddresslval; ?>"/><br>
-				the name of the job applied is <?php echo $jobname; ?>
+				the name of the job applied is <strong ><?php echo $jobname; ?></strong>
 			</ul>
 			<?php
 		  $resumeUrl= $personResume['url']; ?>
