@@ -45,7 +45,7 @@ function insert_new_application_function(){
         return;
     }
 
-    //check file type and upload file data if it is not correct exit the function
+    //check file type and upload file data, if it is not correct exit the function
     $supported_types = array('application/pdf');
     $arr_file_type = wp_check_filetype(basename($_FILES['resume']['name']));
     $uploaded_type = $arr_file_type['type'];
