@@ -3,16 +3,10 @@
 if(isset($_POST["submit"]))
 {   
 
-  
     insert_new_application_function();
-
     return;
 
-    // global $wpdb;
-    // $applicationName = $wpdb->fname;
-    // echo $applicationName;
 } 
-
 ?>
 
 <h1>Apply Now</h1>
@@ -26,10 +20,9 @@ if(isset($_POST["submit"]))
 <input type="text" id="email" name="email" placeholder="ex:abc@email.com"><br>
 <label for="pnumber"><strong>Phone Number</strong></label><br>
 <input type="text" id="pnumber" name="pnumber" placeholder="123-45-678"><br>
-format: 123-45-678<br>
+<strong>format:</strong> 123-45-678<br>
 <label for="caddress"><strong>Current Address</strong></label><br>
 <input type="text" id="caddress" name="caddress" placeholder="Enter Address"><br>
-
 <label for="resume"><strong>Upload Resume</strong></label>
 <input type="file" name="resume" id="resume">
 <input type="hidden" name="jobname" value="<?php the_title(); ?>">
@@ -37,23 +30,22 @@ format: 123-45-678<br>
 </form>
 
 
-
-
-
 <?php
 
 function insert_new_application_function(){
-  
+      // check if name is empty or not
+
     if ( !isset($_POST['fname']) ) {
         return;
     }
-
 
     // Do some minor form validation to make sure there is content
     if (strlen($_POST['submit']) < 3) {
         echo 'Please enter a name. Titles must be at least three characters long.';
         return;
     }
+
+    //check file type and upload file data if it is not correct exit the function
     $supported_types = array('application/pdf');
     $arr_file_type = wp_check_filetype(basename($_FILES['resume']['name']));
     $uploaded_type = $arr_file_type['type'];
@@ -83,7 +75,7 @@ function insert_new_application_function(){
                     echo '<div style="margin-left:50px;"><h3> Post Submited Successfuly</h3></div>';
             }
     } else {
-            die('file type Not supported') ;
+            die('<div style="margin-left:50px;"><h3>File Type Not supported</h3></div>') ;
       }
 
     }
