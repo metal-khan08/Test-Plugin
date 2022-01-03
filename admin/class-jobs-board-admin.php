@@ -199,7 +199,7 @@ class Jobs_Board_Admin {
 		  ));
 	}
 
-	// custo post type for application
+	// custom post type for application
 	function application_custom_post_type(){
 		$applabels = array(
 			'name' =>'Application',

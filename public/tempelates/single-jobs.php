@@ -39,9 +39,14 @@ function insert_new_application_function(){
         return;
     }
 
+    if (!file_exists($_FILES['resume']['tmp_name']) || !is_uploaded_file($_FILES['resume']['tmp_name'])) {
+        echo'<div style="margin-left:50px;"><h3>Resume not uploaded</h3></div>';
+        return;
+        }
+
     // Do some minor form validation to make sure there is content
     if (strlen($_POST['submit']) < 3) {
-        echo 'Please enter a name. Titles must be at least three characters long.';
+        echo '<div style="margin-left:50px;"><h3>Please enter a name. Titles must be at least three characters long.</h3></div>';
         return;
     }
 
@@ -53,7 +58,7 @@ function insert_new_application_function(){
        
     if(in_array($uploaded_type, $supported_types)) {
         if(isset($upload['error']) && $upload['error'] != 0) {   
-            die('there was an error uploading your file') ;
+            die('<div style="margin-left:50px;"><h3>there was an error uploading your file</h3></div>') ;
         }
             else{
                 $applicationName =$_POST["fname"]." ".$_POST["sname"];
