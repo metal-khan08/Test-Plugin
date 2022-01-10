@@ -290,7 +290,7 @@ class Jobs_Board_Admin {
                 break;
             case 'status':
 				$terms = wp_get_object_terms( $post_id, 'application_status');
-				$output ='Pending';
+				$output ='';
             	foreach ( $terms as $term ) {
                 $output=$term->name; 
         } 
@@ -353,11 +353,9 @@ class Jobs_Board_Admin {
                 $output=$term->name; 
         } 
 		$appstatus=$output;
-		if(has_term( $appstatus, 'application_status')){?>
-		<script>
-			console.log('this is runnig')
-		</script>		
-<?php		}
+		if(has_term( $appstatus, 'application_status')){
+			
+			}
 
 	
 		// Compose the email message.
