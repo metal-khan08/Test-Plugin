@@ -335,37 +335,42 @@ class Jobs_Board_Admin {
 		  click to download resume <button><a download="<?php echo $fnameval; ?> resume" href="<?php echo $resumeUrl; ?>">Download Resume</a></button>
 	<?php }
 
-	function send_mail_when_status_changed($new_status, $old_status, $post ) {
-		if ( 'publish' !== $new_status ||
-			$new_status === $old_status ||
-			'application' !== get_post_type( $post ) ) {
-			return;
-		}
-	
-		// Get the post author data.
-		if ( ! $user = get_userdata( $post->post_author ) ) {
-			return;
-		}
-		//check if the taxonomy is changed
-        $terms = wp_get_object_terms( $post->ID, 'application_status');
-		$output ='Pending';
-            foreach ( $terms as $term ) {
-                $output=$term->name; 
-        } 
-		$appstatus=$output;
-		if(has_term( $appstatus, 'application_status')){
+	function send_mail_when_status_changed($data, $postarr, $unsanitized_postarr   ){
+		$post_ID=$postarr['post_ID'];
+		//getting the updated taxonomy ID
+		$updated_status_ID=($postarr['tax_input']['application_status'][1]);//
+		//getting the id of the post author
+		$post_user_id=$data['post_author'];
+		//getting the email of the post author
+		$user_email = get_the_author_meta( 'user_email',$post_user_id);
+		//fethcing the previous taxonomy status ID from the database
+        $terms = wp_get_object_terms( $post_ID, 'application_status');
+		foreach ( $terms as $term ) {
+			$old_status_ID=$term->term_id; 
+		} 
+		if($old_status_ID!=$updated_status_ID){
+			if($updated_status_ID==11){
+				// Email subject"
+				$subject = 'Your Application Status';
 			
+				// Email body
+				$message = 'Your Application for the Job was accepted ';
+			
+				$if_sent=wp_mail( $user_email, $subject, $message );
+				echo $if_sent;
+				die();
+			}else if($updated_status_ID==12){
+				// Email subject, "New {post_type_label}"
+				$subject = 'Your Application Status';
+			
+				// Email body
+				$message = 'Your Application for the Job was Rejected ';
+			
+				$if_sent=wp_mail( $user_email, $subject, $message );
+				echo $if_sent;
+				die();
 			}
-
-	
-		// Compose the email message.
-		// $body = sprintf( 'Hey %s, your awesome post has been published! See ,
-		// 	esc_html( $user->display_name ),
-		// 	get_permalink( $post )
-		// );
-	
-		// // Now send to the post author.
-		// wp_mail( $user->user_email, 'Your post published!', $body );
+		}
 	}
 	
 }
