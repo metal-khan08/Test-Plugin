@@ -175,6 +175,21 @@ class Jobs_Board {
 		//adding meta box the call back funtcion for application is on the admin/class-jobs-board-admin.php
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'application_metabox' );
 
+		//adding a custom taxonomy for application
+		$this->loader->add_action( 'init', $plugin_admin, 'application_taxonomy' );
+		
+		//column for the applicationmanage_edit-movie_columns
+		$this->loader->add_filter( 'manage_application_posts_columns', $plugin_admin, 'application_post_type_columns' );
+        $this->loader->add_filter( 'manage_application_posts_custom_column', $plugin_admin, 'application_fill_post_type_columns', 10, 2);
+		//send mail on status changed
+        $this->loader->add_filter( 'transition_post_status', $plugin_admin, 'send_mail_when_status_changed', 10, 3);
+
+
+
+		
+
+
+
 
 
 		

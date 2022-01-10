@@ -212,7 +212,7 @@ class Jobs_Board_Admin {
 			'label' => __( 'Application', 'textdomain' ),
 			'labels' => $applabels,
 			'menu_icon' => 'dashicons-portfolio',
-			'supports' => array('title'),
+			'supports' => array('title', ),
 			'taxonomies' => array(),
 			'public' => true,
 			'show_ui' => true,
@@ -228,6 +228,33 @@ class Jobs_Board_Admin {
 		register_post_type( 'application', $appargs );
 	}
 
+	//adding custom taxonomy for the applicaiton
+	function application_taxonomy(){
+		
+
+
+		  $labels = array(
+			'name'              => _x( 'Application Status', 'taxonomy general name' ),
+			'singular_name'     => _x( 'status', 'taxonomy singular name' ),
+			'search_items'      => __( 'Search Application Status' ),
+			'all_items'         => __( 'All Application Status' ),
+			'edit_item'         => __( 'Edit status' ),
+			'update_item'       => __( 'Update status' ),
+			'add_new_item'      => __( 'Add New status' ),
+			'new_item_name'     => __( 'New status Name' ),
+			'menu_name'         => __( 'status' ),
+		);
+		$args   = array(
+			'hierarchical'      => true, // make it hierarchical (like categories)
+			'labels'            => $labels,
+			'show_ui'           => true,
+			'show_admin_column' => true,
+			'query_var'         => true,
+			'rewrite'           => [ 'slug' => 'status' ],
+		);
+		register_taxonomy( 'application_status', [ 'application' ], $args );
+	}
+	 
 	//adding metaboxes for application metabox
 	function application_metabox(){
 		add_meta_box(
@@ -239,6 +266,42 @@ class Jobs_Board_Admin {
 			'default'
 		);
 	}
+
+
+	//custom column for the application post type
+	function application_post_type_columns($columns){
+        $post_name  = 'application';
+        return array(
+			'cb'			  => __( '<input type="checkbox" />' ),
+            'title'           => __( 'Title', 'application' ),
+            'author'          => __( 'Author', 'application' ),
+            'status'       	  => __( 'Application Status','Application' ),
+            'job_name'        => __( 'Job Name','Application' ),
+			'date'            => __( 'Date','Application'  )
+        );
+		return $columns;
+		
+	}
+	function application_fill_post_type_columns( $column, $post_id){
+
+		switch ( $column ) {
+            case 'author':
+                    echo get_the_author( $post_id ) ;
+                break;
+            case 'status':
+				$terms = wp_get_object_terms( $post_id, 'application_status');
+				$output ='Pending';
+            	foreach ( $terms as $term ) {
+                $output=$term->name; 
+        } 
+				echo $output;
+                break;
+            case 'job_name':
+				echo get_post_meta( $post_id, 'jobname', true );
+                break;
+		}
+	}
+
 
 	//call back funtion for the application metabox
 	function application_meta_input_box($post){ 
@@ -272,4 +335,39 @@ class Jobs_Board_Admin {
 		  click to download resume <button><a download="<?php echo $fnameval; ?> resume" href="<?php echo $resumeUrl; ?>">Download Resume</a></button>
 	<?php }
 
+	function send_mail_when_status_changed($new_status, $old_status, $post ) {
+		if ( 'publish' !== $new_status ||
+			$new_status === $old_status ||
+			'application' !== get_post_type( $post ) ) {
+			return;
+		}
+	
+		// Get the post author data.
+		if ( ! $user = get_userdata( $post->post_author ) ) {
+			return;
+		}
+		//check if the taxonomy is changed
+        $terms = wp_get_object_terms( $post->ID, 'application_status');
+		$output ='Pending';
+            foreach ( $terms as $term ) {
+                $output=$term->name; 
+        } 
+		$appstatus=$output;
+		if(has_term( $appstatus, 'application_status')){?>
+		<script>
+			console.log('this is runnig')
+		</script>		
+<?php		}
+
+	
+		// Compose the email message.
+		// $body = sprintf( 'Hey %s, your awesome post has been published! See ,
+		// 	esc_html( $user->display_name ),
+		// 	get_permalink( $post )
+		// );
+	
+		// // Now send to the post author.
+		// wp_mail( $user->user_email, 'Your post published!', $body );
+	}
+	
 }
