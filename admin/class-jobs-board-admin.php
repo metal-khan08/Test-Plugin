@@ -336,9 +336,17 @@ class Jobs_Board_Admin {
 	<?php }
 
 	function send_mail_when_status_changed($data, $postarr, $unsanitized_postarr   ){
+		if($data['post_type']!='application'){
+			return $data;
+		}
 		$post_ID=$postarr['post_ID'];
 		//getting the updated taxonomy ID
-		$updated_status_ID=($postarr['tax_input']['application_status'][1]);//
+		$updated_status_ID=($postarr['tax_input']['application_status'][1]);
+		//getting the name of the updated status
+		$updated_status_term=get_term($updated_status_ID );
+		$updated_status_name=$updated_status_term->name;
+		$updated_status_name;
+		$updated_status_name=strtolower($updated_status_name);
 		//getting the id of the post author
 		$post_user_id=$data['post_author'];
 		//getting the email of the post author
@@ -349,28 +357,33 @@ class Jobs_Board_Admin {
 			$old_status_ID=$term->term_id; 
 		} 
 		if($old_status_ID!=$updated_status_ID){
-			if($updated_status_ID==11){
+			if($updated_status_name=='accepted'){
 				// Email subject"
 				$subject = 'Your Application Status';
 			
 				// Email body
 				$message = 'Your Application for the Job was accepted ';
 			
-				$if_sent=wp_mail( $user_email, $subject, $message );
-				echo $if_sent;
-				die();
-			}else if($updated_status_ID==12){
+				wp_mail( $user_email, $subject, $message );
+			}else if($updated_status_name=='rejected'){
 				// Email subject, "New {post_type_label}"
 				$subject = 'Your Application Status';
 			
 				// Email body
 				$message = 'Your Application for the Job was Rejected ';
 			
-				$if_sent=wp_mail( $user_email, $subject, $message );
-				echo $if_sent;
-				die();
+				wp_mail( $user_email, $subject, $message );
+			}else if($updated_status_name=='pending'){
+				// Email subject, "New {post_type_label}"
+				$subject = 'Your Application Status';
+			
+				// Email body
+				$message = 'Your Application for the Job was Pending ';
+			
+				wp_mail( $user_email, $subject, $message );
 			}
 		}
+		return $data;
 	}
 	
 }
