@@ -72,6 +72,12 @@ class Jobs_Board_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
+		$stylesheet_valid_pages=array('jobs-board-settings','settings-page-2');
+		$page=isset($_REQUEST['page']) ? $_REQUEST['page'] :"";
+		if(in_array($page, $stylesheet_valid_pages)){
+		wp_enqueue_style( 'bootstrap-css', plugin_dir_url( __FILE__ ) . 'css/bootstrap.min.css', array(), $this->version, 'all' );
+
+		}
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/jobs-board-admin.css', array(), $this->version, 'all' );
 
@@ -97,7 +103,12 @@ class Jobs_Board_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/jobs-board-admin.js', array( 'jquery' ), $this->version, false );
+		$javascript_valid_pages=array('create-cpt','cpt-settings');
+		$page=isset($_REQUEST['page']) ? $_REQUEST['page'] :"";
+		if(in_array($page, $javascript_valid_pages)){
+			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ), $this->version, false );
 
+		}
 	}
 
 	/**
@@ -389,7 +400,7 @@ class Jobs_Board_Admin {
 		return $data;
 	}
 
-	//*************admin menu sectino for the jobs-Board************************/
+	//*************admin menu section for the jobs-Board************************/
 
 	function jobs_board_settings_menu(){
 		add_menu_page( 'J-Board Settings', 'J-Board Settings', 'manage_options', 'jobs-board-settings', array($this ,'jobs_board_menu_callback_fnc'), 'dashicons-editor-justify', 40 );
@@ -398,10 +409,18 @@ class Jobs_Board_Admin {
 	}
 
 	function jobs_board_menu_callback_fnc(){
-		echo 'this is settings page';
+		require_once 'partials/jobs-board-settings-page.php';
 	}
 	function jobs_board_submenu_callback_fnc(){
 		echo 'this is sub setings page';
 	}
-	
-}
+
+	//*************this is call back function to register the settings **********************/
+	function register_jobs_board_settings(){
+		register_setting( 'jobsBoardSettings', 'fsettings' );
+		register_setting( 'jobsBoardSettings', 'Ssettings' );
+
+	}
+
+//paste the code above it
+}//class end bracked donot remove

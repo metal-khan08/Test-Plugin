@@ -185,6 +185,9 @@ class Jobs_Board {
         $this->loader->add_filter( 'wp_insert_post_data', $plugin_admin, 'send_mail_when_status_changed', 10, 3);
 		//register menu settings page
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'jobs_board_settings_menu' );
+		//register settings hook
+		$this->loader->add_action('init', $plugin_admin, 'register_jobs_board_settings');
+
 
 
 
