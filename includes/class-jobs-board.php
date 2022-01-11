@@ -183,6 +183,8 @@ class Jobs_Board {
         $this->loader->add_filter( 'manage_application_posts_custom_column', $plugin_admin, 'application_fill_post_type_columns', 10, 2);
 		//send mail on status changed
         $this->loader->add_filter( 'wp_insert_post_data', $plugin_admin, 'send_mail_when_status_changed', 10, 3);
+		//register menu settings page
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'jobs_board_settings_menu' );
 
 
 

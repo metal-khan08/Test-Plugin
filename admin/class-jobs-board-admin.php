@@ -282,6 +282,7 @@ class Jobs_Board_Admin {
 		return $columns;
 		
 	}
+	//functio to show data in the culimns of application dashboard
 	function application_fill_post_type_columns( $column, $post_id){
 
 		switch ( $column ) {
@@ -335,17 +336,18 @@ class Jobs_Board_Admin {
 		  click to download resume <button><a download="<?php echo $fnameval; ?> resume" href="<?php echo $resumeUrl; ?>">Download Resume</a></button>
 	<?php }
 
-	function send_mail_when_status_changed($data, $postarr, $unsanitized_postarr   ){
-		if($data['post_type']!='application'){
+
+//****************funtion to send email when the applicatio status is changed**************** */
+	function send_mail_when_status_changed($data, $postarr, $unsanitized_postarr){
+		if($data['post_type']!='application'){ //checking if the post type is application
 			return $data;
 		}
-		$post_ID=$postarr['post_ID'];
+		$post_ID=!empty($postarr['post_id']) ? $postarr['post_id'] :'';
 		//getting the updated taxonomy ID
-		$updated_status_ID=($postarr['tax_input']['application_status'][1]);
+		$updated_status_ID=!empty($postarr['tax_input']['application_status'][1]) ? $postarr['tax_input']['application_status'][1] : '';
 		//getting the name of the updated status
 		$updated_status_term=get_term($updated_status_ID );
-		$updated_status_name=$updated_status_term->name;
-		$updated_status_name;
+		$updated_status_name=!empty($updated_status_term->name) ?$updated_status_term->name: '';
 		$updated_status_name=strtolower($updated_status_name);
 		//getting the id of the post author
 		$post_user_id=$data['post_author'];
@@ -353,6 +355,7 @@ class Jobs_Board_Admin {
 		$user_email = get_the_author_meta( 'user_email',$post_user_id);
 		//fethcing the previous taxonomy status ID from the database
         $terms = wp_get_object_terms( $post_ID, 'application_status');
+		$old_status_ID='';
 		foreach ( $terms as $term ) {
 			$old_status_ID=$term->term_id; 
 		} 
@@ -384,6 +387,21 @@ class Jobs_Board_Admin {
 			}
 		}
 		return $data;
+	}
+
+	//*************admin menu sectino for the jobs-Board************************/
+
+	function jobs_board_settings_menu(){
+		add_menu_page( 'J-Board Settings', 'J-Board Settings', 'manage_options', 'jobs-board-settings', array($this ,'jobs_board_menu_callback_fnc'), 'dashicons-editor-justify', 40 );
+		add_submenu_page( 'jobs-board-settings', 'Setting 1', 'Setting 1','manage_options', 'jobs-board-settings',array($this ,'jobs_board_menu_callback_fnc')  );
+		add_submenu_page( 'jobs-board-settings', 'Setting 2', 'Setting 2','manage_options', 'settings-page-2',array($this ,'jobs_board_submenu_callback_fnc')  );
+	}
+
+	function jobs_board_menu_callback_fnc(){
+		echo 'this is settings page';
+	}
+	function jobs_board_submenu_callback_fnc(){
+		echo 'this is sub setings page';
 	}
 	
 }
