@@ -18,7 +18,7 @@
 
 
 
-<!------------------settings page for the jobs board-------------------------------->
+<!------------------settings page for the jobs board------------------------>
 
 <div class='settings-back-div'>
 <form method="post" action="options.php">
@@ -34,6 +34,6 @@
     <label for="Ssettings">Second Settings</label>
     <input type="text" class="form-control" id="Ssettings" name="Ssettings" value="<?php echo get_option( 'Ssettings' ); ?>">
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-danger">Submit</button>
 </form>
 </div>
