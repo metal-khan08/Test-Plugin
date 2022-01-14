@@ -232,11 +232,5 @@ class Jobs_Board_Public {
 						wp_reset_postdata()	;
 
 			}
-	//function for the ajax request
-
-	// function create_applicant(){
-	// 	wp_send_json_success( array('POST'=> $_POST, 'FILES' =>$_FILES));
-		
-	// }
 	} 
 }

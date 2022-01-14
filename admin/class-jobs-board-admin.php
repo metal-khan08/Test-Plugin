@@ -72,7 +72,7 @@ class Jobs_Board_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-		$stylesheet_valid_pages=array('jobs-board-settings','settings-page-2');
+		$stylesheet_valid_pages=array('jobs-board-settings','settings-page-2', 'application-settings');
 		$page=isset($_REQUEST['page']) ? $_REQUEST['page'] :"";
 		if(in_array($page, $stylesheet_valid_pages)){
 		wp_enqueue_style( 'bootstrap-css', plugin_dir_url( __FILE__ ) . 'css/bootstrap.min.css', array(), $this->version, 'all' );
@@ -103,7 +103,11 @@ class Jobs_Board_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/jobs-board-admin.js', array( 'jquery' ), $this->version, false );
-		$javascript_valid_pages=array('create-cpt','cpt-settings');
+		wp_localize_script( $this->plugin_name, 'my_ajax_object',
+            array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+			wp_enqueue_script('jquery-form');
+
+		$javascript_valid_pages=array('create-cpt','cpt-settings', 'application-settings');
 		$page=isset($_REQUEST['page']) ? $_REQUEST['page'] :"";
 		if(in_array($page, $javascript_valid_pages)){
 			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ), $this->version, false );
@@ -121,29 +125,29 @@ class Jobs_Board_Admin {
 	 // creating Jobs board custom Post type
 	function create_jobsboard_cpt() {
 		$labels = array(
-			'name' =>'Jobs Board',
+			  'name' 		 =>'Jobs Board',
 			  'add_new_item' =>'New Job',
-			  'edit_item' =>'Edit Job',
-			  'all_items'=> 'All Jobs',
+			  'edit_item' 	 =>'Edit Job',
+			  'all_items'	 => 'All Jobs',
 			  'Singular_name'=> 'Job'
 		);
 		$args = array(
-			'label' => __( 'jobs_board', 'textdomain' ),
-			'description' => __( 'A detail of the jobs available', 'textdomain' ),
-			'labels' => $labels,
-			'menu_icon' => 'dashicons-groups',
-			'supports' => array('title'),
-			'taxonomies' => array(),
-			'public' => true,
-			'show_ui' => true,
-			'show_in_menu' => true,
+			'label' 		=> __( 'jobs_board', 'textdomain' ),
+			'description' 	=> __( 'A detail of the jobs available', 'textdomain' ),
+			'labels' 		=> $labels,
+			'menu_icon' 	=> 'dashicons-groups',
+			'supports' 		=> array('title'),
+			'taxonomies' 	=> array(),
+			'public' 		=> true,
+			'show_ui' 		=> true,
+			'show_in_menu' 	=> true,
 			'menu_position' => 5,
 			'show_in_admin_bar' => true,
 			'show_in_nav_menus' => true,
-			'has_archive' => true,
-			'hierarchical' => false,
-			'show_in_rest' => true,
-			'capability_type' => 'post',
+			'has_archive' 	=> true,
+			'hierarchical' 	=> false,
+			'show_in_rest' 	=> true,
+			'capability_type' 	=> 'post',
 		);
 		register_post_type( 'jobs', $args );
 	}
@@ -185,13 +189,13 @@ class Jobs_Board_Admin {
 		$jobTimings=isset($_POST["meta_timings"]) ? $_POST["meta_timings"] : 'Enter Timings';
 		$jobBenefits=isset($_POST["custom_benefits"]) ? $_POST["custom_benefits"] : 'No benefits';
 		//updating the data into the database using the above captured values
-		update_post_meta($post_id, "meta_job_location",$jobLocation  );
-		update_post_meta($post_id, "meta_number",$jobSalary );
-		update_post_meta($post_id, "meta_timings", $jobTimings );
-		update_post_meta($post_id, "custom_benefits",  $jobBenefits);
+		update_post_meta($post_id, "meta_job_location", $jobLocation);
+		update_post_meta($post_id, "meta_number", $jobSalary);
+		update_post_meta($post_id, "meta_timings", $jobTimings);
+		update_post_meta($post_id, "custom_benefits", $jobBenefits);
 		}
 
-	// adding custom taxonomy
+	//adding custom taxonomy
 	function job_boards_taxonomy(){
 		$labels = array(
 			'name' =>  'Job Category',
@@ -199,13 +203,13 @@ class Jobs_Board_Admin {
 		 
 		// Now register the non-hierarchical taxonomy like tag
 		  register_taxonomy('jobs','jobs',array(
-			'hierarchical' => false,
-			'labels' => $labels,
-			'show_ui' => true,
-			'show_in_rest' => true,
-			'show_admin_column' => true,
+			'hierarchical'		 => false,
+			'labels' 			 => $labels,
+			'show_ui' 			 => true,
+			'show_in_rest' 		 => true,
+			'show_admin_column'  => true,
 			'update_count_callback' => '_update_post_term_count',
-			'query_var' => true,
+			'query_var' 		 => true,
 			'rewrite' => array( 'slug' => 'topic' ),
 		  ));
 	}
@@ -220,21 +224,20 @@ class Jobs_Board_Admin {
 			  'Singular_name'=> 'Application'
 		);
 		$appargs = array(
-			'label' => __( 'Application', 'textdomain' ),
-			'labels' => $applabels,
-			'menu_icon' => 'dashicons-portfolio',
-			'supports' => array('title', ),
-			'taxonomies' => array(),
-			'public' => true,
-			'show_ui' => true,
-			'show_in_menu' => true,
-			'menu_position' => 5,
+			'label' 		=> __( 'Application', 'textdomain' ),
+			'labels' 		=> $applabels,
+			'menu_icon' 	=> 'dashicons-portfolio',
+			'supports' 		=> array('title', ),
+			'public' 		=> true,
+			'show_ui' 		=> true,
+			'show_in_menu'	=> true,
+			'menu_position'	=> 5,
 			'show_in_admin_bar' => true,
 			'show_in_nav_menus' => true,
-			'has_archive' => true,
-			'hierarchical' => false,
-			'show_in_rest' => true,
-			'capability_type' => 'post',
+			'has_archive' 	=> true,
+			'hierarchical' 	=> false,
+			'show_in_rest' 	=> true,
+			'capability_type' 	=> 'post'
 		);
 		register_post_type( 'application', $appargs );
 	}
@@ -293,7 +296,7 @@ class Jobs_Board_Admin {
 		return $columns;
 		
 	}
-	//functio to show data in the culimns of application dashboard
+	//functio to show data in the columns of application dashboard
 	function application_fill_post_type_columns( $column, $post_id){
 
 		switch ( $column ) {
@@ -348,7 +351,7 @@ class Jobs_Board_Admin {
 	<?php }
 
 
-//****************funtion to send email when the applicatio status is changed**************** */
+/****************funtion to send email when the applicatio status is changed****************/
 	function send_mail_when_status_changed($data, $postarr, $unsanitized_postarr){
 		if($data['post_type']!='application'){ //checking if the post type is application
 			return $data;
@@ -400,27 +403,279 @@ class Jobs_Board_Admin {
 		return $data;
 	}
 
-	//*************admin menu section for the jobs-Board************************/
+	/************************admin menu section for the jobs-Board and application************************/
 
 	function jobs_board_settings_menu(){
-		add_menu_page( 'J-Board Settings', 'J-Board Settings', 'manage_options', 'jobs-board-settings', array($this ,'jobs_board_menu_callback_fnc'), 'dashicons-editor-justify', 40 );
-		add_submenu_page( 'jobs-board-settings', 'Setting 1', 'Setting 1','manage_options', 'jobs-board-settings',array($this ,'jobs_board_menu_callback_fnc')  );
-		add_submenu_page( 'jobs-board-settings', 'Setting 2', 'Setting 2','manage_options', 'settings-page-2',array($this ,'jobs_board_submenu_callback_fnc')  );
+		add_submenu_page( 'edit.php?post_type=jobs', 'J-Board Settings', 'J-Board Settings','manage_options', 'jobs-board-settings',array($this ,'jobs_board_menu_callback_fnc')  );
+		add_submenu_page( 'edit.php?post_type=application', 'Application Settings', 'Application Settings','manage_options', 'application-settings',array($this ,'application_menu_callback_fnc')  );
 	}
-
 	function jobs_board_menu_callback_fnc(){
-		require_once 'partials/jobs-board-settings-page.php';
+		require_once 'partials/jobs-board-admin-display.php';
 	}
-	function jobs_board_submenu_callback_fnc(){
-		echo 'this is sub setings page';
+	function application_menu_callback_fnc(){
+		require_once 'partials/jobs-board-settings-page.php';
+		
 	}
 
 	//*************this is call back function to register the settings **********************/
 	function register_jobs_board_settings(){
 		register_setting( 'jobsBoardSettings', 'fsettings' );
 		register_setting( 'jobsBoardSettings', 'Ssettings' );
+	}
+
+
+//call back for the ajax request and to create the csv file
+function func_export_all_posts() {
+        $args = array(
+            'post_type' 	 => 'application',
+            'post_status' 	 => 'publish',
+            'posts_per_page' => -1,
+        );
+		$application = new WP_Query( $args );
+		$path 		   = wp_upload_dir();
+		$application_content = array();
+		$filename 	   = "/applications.csv";
+		$file 		   = fopen( $path['path'].$filename, 'w');
+		while ( $application->have_posts() ){ 
+			$application->the_post();
+			
+				$post_ID=get_the_ID();
+				$terms = wp_get_object_terms( $post_ID, 'application_status');
+				$status = array();
+				foreach ( $terms as $term ) {
+				$status[] =$term->name; 
+				$post_URL=get_the_permalink();
+			} 
+			$tags = get_post_meta( $post_ID, 'pnumber', true );
+			$post_title=get_the_title();
+
+			$application_content[] = array (
+				'Post ID' 	 => $post_ID,
+				'Post Title' => $post_title,
+				'URL'		 => $post_title,
+				'Status'	 => implode(",", $status),
+				'Num'		 => $tags
+			);
+		}
+		$keys = array_keys( $application_content[0] );
+
+		fputcsv( $file, $keys );
+		foreach ($application_content as $key => $application_info) {
+			fputcsv( $file, $application_info );
+		}
+			fclose( $file );
+			$fileUrl = $path['url'].$filename;		
+			wp_send_json( $fileUrl);
+		die();
+		
+	}
+
+	function jobs_board_csv(){
+		$args = array(
+            'post_type' 	 => 'jobs',
+            'post_status' 	 => 'publish',
+            'posts_per_page' => -1,
+        );
+		$application = new WP_Query( $args );
+		$path 		   = wp_upload_dir();
+		$application_content = array();
+		$filename 	   = "/jobs.csv";
+		$file 		   = fopen( $path['path'].$filename, 'w');
+		while ( $application->have_posts() ){ 
+			$application->the_post();
+			
+				$post_ID=get_the_ID();
+				$terms = wp_get_object_terms( $post_ID, 'jobs');
+				$status = array();
+				foreach ( $terms as $term ) {
+				$status[] =$term->name; 
+				$post_URL=get_the_permalink();
+			} 
+			$tags = get_post_meta( $post_ID, 'meta_job_location', true );
+			$post_title=get_the_title();
+
+			$application_content[] = array (
+				'Post ID' 	 => $post_ID,
+				'Post Title' => $post_title,
+				'URL'		 => $post_title,
+				'Status'	 => implode(",", $status),
+				'Num'		 => $tags
+			);
+		}
+		$keys = array_keys( $application_content[0] );
+
+		fputcsv( $file, $keys );
+		foreach ($application_content as $key => $application_info) {
+			fputcsv( $file, $application_info );
+		}
+			fclose( $file );
+			$fileUrl = $path['url'].$filename;		
+			wp_send_json( $fileUrl);
+		die();
+	}
+	//call back for the import ajax of jobs board
+	function jobs_board_import_csv(){
+		if (!file_exists($_FILES['import']['tmp_name']) || !is_uploaded_file($_FILES['import']['tmp_name'])) {
+			echo'<div style="margin-left:50px;"><h3>File not uploaded</h3></div>';
+			die;
+			}
+		//check file type and upload file data, if it is not correct exit the function
+		$supported_types = array('text/x-comma-separated-values', 'text/comma-separated-values', 'application/octet-stream', 'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel', 'text/plain');
+		$arr_file_type = wp_check_filetype(basename($_FILES['import']['name']));
+		$uploaded_type = $arr_file_type['type'];
+		$upload = wp_upload_bits($_FILES['import']['name'], null, file_get_contents($_FILES['import']['tmp_name']));
+		$file=$upload['url'];
+
+		if(in_array($uploaded_type, $supported_types)) {
+			if(isset($upload['error']) && $upload['error'] != 0) {   
+				echo '<div style="margin-left:50px;"><h3>there was an error uploading your file</h3></div>';
+				die() ;
+			}
+				else{
+					//code here
+				}
+		} else {
+				echo '<div style="margin-left:50px;"><h3>File Type Not supported</h3></div>';
+				die() ;
+		  }
+		
+		
+		die();
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//***************************function to import data from csv file***************************/
+
+	function test__import_data(){
+		global $wpdb;
+
+	// I'd recommend replacing this with your own code to make sure
+	//  the post creation _only_ happens when you want it to.
+
+	// Change these to whatever you set
+	$sitepoint = array(
+		"custom-field" 		=> "meta_job_location",
+		"custom-post-type"  => "jobs"
+	);
+
+	// Get the data from all those CSVs!
+	$posts = function() {
+		$data = array();
+		$errors = array();
+
+		// Get array of CSV files
+		$files = glob( __DIR__ . "/data/*.csv" );
+
+		foreach ( $files as $file ) {
+
+			// Attempt to change permissions if not readable
+			if ( ! is_readable( $file ) ) {
+				chmod( $file, 0744 );
+			}
+
+			// Check if file is writable, then open it in 'read only' mode
+			if ( is_readable( $file ) && $_file = fopen( $file, "r" ) ) {
+
+				// To sum this part up, all it really does is go row by
+				//  row, column by column, saving all the data
+				$post = array();
+
+				// Get first row in CSV, which is of course the headers
+		    	$header = fgetcsv( $_file );
+
+		        while ( $row = fgetcsv( $_file ) ) {
+
+		            foreach ( $header as $i => $key ) {
+	                    $post[$key] = $row[$i];
+	                }
+
+	                $data[] = $post;
+		        }
+
+				fclose( $_file );
+
+			} else {
+				$errors[] = "File '$file' could not be opened. Check the file's permissions to make sure it's readable by your server.";
+			}
+		}
+
+		if ( ! empty( $errors ) ) {
+			// ... do stuff with the errors
+		}
+
+		return $data;
+	};
+
+	// Simple check to see if the current post exists within the
+	//  database. This isn't very efficient, but it works.
+	$post_exists = function( $title ) use ( $wpdb, $sitepoint ) {
+
+		// Get an array of all posts within our custom post type
+		$posts = $wpdb->get_col( "SELECT post_title FROM {$wpdb->posts} WHERE post_type = '{$sitepoint["custom-post-type"]}'" );
+
+		// Check if the passed title exists in array
+		return in_array( $title, $posts );
+	};
+
+	foreach ( $posts() as $post ) {
+
+		// If the post exists, skip this post and go to the next one
+		if ( $post_exists( $post["title"] ) ) {
+			continue;
+		}
+
+		// Insert the post into the database
+		$post["id"] = wp_insert_post( array(
+			"post_title" => $post["title"],
+			"post_content" => $post["content"],
+			"post_type" => $sitepoint["custom-post-type"],
+			"post_status" => "publish"
+		));
+
+		// Get uploads dir
+		$uploads_dir = wp_upload_dir();
+
+		// Set attachment meta
+		$attachment = array();
+		$attachment["path"] = "{$uploads_dir["baseurl"]}/sitepoint-attachments/{$post["attachment"]}";
+		$attachment["file"] = wp_check_filetype( $attachment["path"] );
+		$attachment["name"] = basename( $attachment["path"], ".{$attachment["file"]["ext"]}" );
+
+		// Replace  post  attachment  data
+		$post["attachment"] = $attachment;
+
+		// Insert attachment into media library
+		$post["attachment"]["id"] = wp_insert_attachment( array(
+			"guid" => $post["attachment"]["path"],
+			"post_mime_type" => $post["attachment"]["file"]["type"],
+			"post_title" => $post["attachment"]["name"],
+			"post_content" => "",
+			"post_status" => "inherit"
+		));
+
+		// Update post's custom field with attachment
+		update_field( $sitepoint["custom-field"], $post["attachment"]["id"], $post["id"] );
+		
+	}
 
 	}
 
-//paste the code above it
+ //paste the code above it
 }//class end bracked donot remove

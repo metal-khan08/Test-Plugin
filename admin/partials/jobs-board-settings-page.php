@@ -12,28 +12,51 @@
  * @subpackage Jobs_Board/admin/partials
  */
 
-
- ?>
+?>
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 
 
-<!------------------settings page for the jobs board------------------------>
+<!------------------settings page for the Application------------------------>
 
-<div class='settings-back-div'>
-<form method="post" action="options.php">
-    <?php
-    settings_fields( 'jobsBoardSettings' );
-    do_settings_sections( 'jobsBoardSettings' );
-    ?>
-  <div class="form-group">
-    <label for="fsettings">First Settings</label>
-    <input type="text" class="form-control" id="fsettings" name="fsettings" aria-describedby="emailHelp" value="<?php echo get_option( 'fsettings' ); ?>">
+<div class="container" style="margin-top:40px; max-width:50%; text-align:center; ">
+  <div class="row alert alert-primary">
+    <div class="col-sm">
+        <h4>Click this button to export applications </h4>
+        <form id='applicationExport' method="POST" action="">
+				<input class='btn btn-primary' type="submit" name="export" value="Export">
+    	</form>
+    </div>
   </div>
-  <div class="form-group">
-    <label for="Ssettings">Second Settings</label>
-    <input type="text" class="form-control" id="Ssettings" name="Ssettings" value="<?php echo get_option( 'Ssettings' ); ?>">
-  </div>
-  <button type="submit" class="btn btn-danger">Submit</button>
-</form>
 </div>
+
+
+<?php
+
+if(isset($_POST['import'])){
+	echo 'th9is is working';
+}
+?>
+
+<script type="text/javascript">
+		jQuery('#applicationExport').submit(function(event){
+		event.preventDefault();		
+		var formD=jQuery("#applicationExport").serialize();
+    var formData =new FormData;
+    formData.append('action','contact_us');
+		formData.append('contact_us',formD);
+		jQuery.ajax({
+			url:my_ajax_object.ajax_url,
+			data:formData,
+			processData:false,
+			contentType: false,
+			type:'post',
+			success:function(data){
+				console.log('success');
+				window.open( data );
+				jQuery.unlink( data );
+          }
+		});
+		});
+</script>
+

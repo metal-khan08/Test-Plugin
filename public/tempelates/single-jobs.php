@@ -78,14 +78,14 @@ function insert_new_application_function(){
                     update_post_meta($application_id, "jobname", get_the_title() );  
                     wp_set_object_terms( $application_id, 'Pending', 'application_status' );
                     
-                    echo '<div style="margin-left:50px;"><h3> Post Submited Successfuly</h3></div>';
+                    echo '<div style="margin-left:50px;"><h3> Application Submited Successfuly</h3></div>';
             }
     } else {
             die('<div style="margin-left:50px;"><h3>File Type Not supported</h3></div>') ;
       }
 
     }
-        
+
 
 
 get_footer();
