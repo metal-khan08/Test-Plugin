@@ -185,14 +185,16 @@ class Jobs_Board {
         $this->loader->add_filter( 'wp_insert_post_data', $plugin_admin, 'send_mail_when_status_changed', 10, 3);
 		//register menu settings page
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'jobs_board_settings_menu' );
-		//register settings hook
-		$this->loader->add_action('init', $plugin_admin, 'register_jobs_board_settings');
-		//ajax function
-		$this->loader->add_action( 'wp_ajax_contact_us', $plugin_admin,'func_export_all_posts' );
-		//ajax for jobs_board
+		//ajax function for application export
+		$this->loader->add_action( 'wp_ajax_func_export_all_posts', $plugin_admin,'func_export_all_posts' );
+		//ajax for jobs_board export
 		$this->loader->add_action( 'wp_ajax_jobs_board_csv', $plugin_admin,'jobs_board_csv' );
 		//ajax for importing the jobs board posts
 		$this->loader->add_action( 'wp_ajax_jobs_board_import_csv', $plugin_admin,'jobs_board_import_csv' );
+		
+
+
+
 		
 
 		

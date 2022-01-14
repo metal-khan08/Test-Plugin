@@ -11,7 +11,9 @@
  * @package    Jobs_Board
  * @subpackage Jobs_Board/admin/partials
  */
-
+$gb_classs= "session_class";
+		$_SESSION['gb']=isset($gb_classs) ? $gb_classs : '';
+		/*session created*/ 
 ?>
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
@@ -19,7 +21,7 @@
 
 <!------------------settings page for the Application------------------------>
 
-<div class="container" style="margin-top:40px; max-width:50%; text-align:center; ">
+<div class="container <?php echo $_SESSION["gb"] ?>" style="margin-top:40px; max-width:50%; text-align:center; border-radius: 20px;">
   <div class="row alert alert-primary">
     <div class="col-sm">
         <h4>Click this button to export applications </h4>
@@ -43,8 +45,8 @@ if(isset($_POST['import'])){
 		event.preventDefault();		
 		var formD=jQuery("#applicationExport").serialize();
     var formData =new FormData;
-    formData.append('action','contact_us');
-		formData.append('contact_us',formD);
+    formData.append('action','func_export_all_posts');
+		formData.append('func_export_all_posts',formD);
 		jQuery.ajax({
 			url:my_ajax_object.ajax_url,
 			data:formData,

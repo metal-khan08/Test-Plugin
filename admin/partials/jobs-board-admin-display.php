@@ -19,7 +19,7 @@
         <!--------------------- settings page for the jobs board ------------------------------->
 
 
-<div class="container" style="margin-top:40px; max-width:70%; text-align:center; ">
+<div class="container" style="margin-top:40px; max-width:70%; text-align:center; border-radius: 20px;">
   <div class="row">
     <div class="col" style="background-color: mistyrose; padding:20px;">
 		<h4>Click this button to export Jobs </h4>
@@ -36,11 +36,12 @@
 		</form>	
     </div>
   </div>
+  <div id="result"></div>
 
 
   <!---------------------------- script for ajax -------------------------------->
 
-  
+
 <script type="text/javascript">
 		jQuery('#jobsExport').submit(function(event){
 		event.preventDefault();		
@@ -68,6 +69,7 @@
 			success:function(response){
 				console.log(response);
 				document.getElementById("importAction").reset();
+				document.getElementById("result").innerHTML += response;
 
 			}
 		});

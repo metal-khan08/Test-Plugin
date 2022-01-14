@@ -417,12 +417,6 @@ class Jobs_Board_Admin {
 		
 	}
 
-	//*************this is call back function to register the settings **********************/
-	function register_jobs_board_settings(){
-		register_setting( 'jobsBoardSettings', 'fsettings' );
-		register_setting( 'jobsBoardSettings', 'Ssettings' );
-	}
-
 
 //call back for the ajax request and to create the csv file
 function func_export_all_posts() {
@@ -446,15 +440,23 @@ function func_export_all_posts() {
 				$status[] =$term->name; 
 				$post_URL=get_the_permalink();
 			} 
-			$tags = get_post_meta( $post_ID, 'pnumber', true );
+			$Pnumber = get_post_meta( $post_ID, 'pnumber', true );
+			$birthDay=get_post_meta( $post_ID, 'birthdate', true );
+			$uemailval=get_post_meta( $post_ID, 'email', true );
+			$pnumberval=get_post_meta( $post_ID, 'pnumber', true );
+			$ucaddresslval=get_post_meta( $post_ID, 'caddress' , true);
+			$job_name=get_post_meta( $post_ID, 'jobname', true );
+
 			$post_title=get_the_title();
 
 			$application_content[] = array (
-				'Post ID' 	 => $post_ID,
-				'Post Title' => $post_title,
-				'URL'		 => $post_title,
-				'Status'	 => implode(",", $status),
-				'Num'		 => $tags
+				'Full Name' => $post_title,
+				'status'	 => implode(",", $status),
+				'num'		 => $Pnumber,
+				'Job name'	=> $job_name,
+				'birthdate'	=> $birthDay,
+				'email'		=> $uemailval,
+				'caddress'	=> $ucaddresslval
 			);
 		}
 		$keys = array_keys( $application_content[0] );
@@ -470,9 +472,10 @@ function func_export_all_posts() {
 		
 	}
 
-	//call back function to exprt jobsboard csv
+	//call back function to export jobsboard csv
 
 	function jobs_board_csv(){
+		
 		$args = array(
             'post_type' 	 => 'jobs',
             'post_status' 	 => 'publish',
@@ -493,15 +496,18 @@ function func_export_all_posts() {
 				$status[] =$term->name; 
 				$post_URL=get_the_permalink();
 			} 
-			$tags = get_post_meta( $post_ID, 'meta_job_location', true );
+			$getJobLocation = get_post_meta( $post_ID, 'meta_job_location', true );
+			$getJobSalary = get_post_meta( $post_ID, 'meta_number', true );
+			$getJobTimings = get_post_meta( $post_ID, 'meta_timings', true );
 			$post_title=get_the_title();
 
 			$application_content[] = array (
-				'Post ID' 	 => $post_ID,
-				'Post Title' => $post_title,
-				'URL'		 => $post_title,
-				'Status'	 => implode(",", $status),
-				'Num'		 => $tags
+				'title' => $post_title,
+				'URL'		 => $post_URL,
+				'category'	 => implode(",", $status),
+				'city'		 => $getJobLocation,
+				'salary'	 => $getJobSalary,
+				'timings'	 => $getJobTimings
 			);
 		}
 		$keys = array_keys( $application_content[0] );
@@ -516,7 +522,7 @@ function func_export_all_posts() {
 		die();
 	}
 
-	
+
 	//call back for the import ajax of jobs board
 	function jobs_board_import_csv(){
 		if (!file_exists($_FILES['import']['tmp_name']) || !is_uploaded_file($_FILES['import']['tmp_name'])) {
@@ -528,15 +534,52 @@ function func_export_all_posts() {
 		$arr_file_type = wp_check_filetype(basename($_FILES['import']['name']));
 		$uploaded_type = $arr_file_type['type'];
 		$upload = wp_upload_bits($_FILES['import']['name'], null, file_get_contents($_FILES['import']['tmp_name']));
-		$file=$upload['url'];
+		$fileurl=$upload['url'];
 
 		if(in_array($uploaded_type, $supported_types)) {
 			if(isset($upload['error']) && $upload['error'] != 0) {   
 				echo '<div style="margin-left:50px;"><h3>there was an error uploading your file</h3></div>';
 				die() ;
 			}
-				else{
-					//code here
+				else{	
+
+					// Check if file is writable, then open it in 'read only' mode
+					$_file = fopen( $fileurl, "r" );
+						//  row, column by column, saving all the data
+						$post = array();
+
+						// Get first row in CSV, which is of course the headers
+						$header = fgetcsv( $_file );
+						
+						while ( $row = fgetcsv( $_file ) ) {
+
+							foreach ( $header as $i => $key ) {
+								$post[$key] = $row[$i];
+							}
+
+							$posts[] =  $post;
+						}
+						fclose( $_file );
+				
+		foreach ( $posts as $post ) {
+
+			// Insert the post into the database
+			$post["id"] = wp_insert_post( array(
+				"post_title" => $post["title"],
+				"post_type" => 'jobs',
+				"post_status" => "publish"
+			));
+	
+			// Update post's custom meta fields 
+			update_post_meta($post["id"], "meta_job_location", $post["city"]);
+			update_post_meta($post["id"], "meta_number", $post["salary"]);
+			update_post_meta($post["id"], "meta_timings", $post["timings"]);
+			update_post_meta($post["id"], "custom_benefits", $post["benefits"]);
+			wp_set_object_terms( $post["id"],$post["category"] , 'jobs' );
+
+
+		}
+		echo '<h3>Jobs imported</h3>';
 				}
 		} else {
 				echo '<div style="margin-left:50px;"><h3>File Type Not supported</h3></div>';
@@ -545,140 +588,6 @@ function func_export_all_posts() {
 		
 		
 		die();
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	//***************************function to import data from csv file***************************/
-
-	function test__import_data(){
-		global $wpdb;
-
-	// I'd recommend replacing this with your own code to make sure
-	//  the post creation _only_ happens when you want it to.
-
-	// Change these to whatever you set
-	$sitepoint = array(
-		"custom-field" 		=> "meta_job_location",
-		"custom-post-type"  => "jobs"
-	);
-
-	// Get the data from all those CSVs!
-	$posts = function() {
-		$data = array();
-		$errors = array();
-
-		// Get array of CSV files
-		$files = glob( __DIR__ . "/data/*.csv" );
-
-		foreach ( $files as $file ) {
-
-			// Attempt to change permissions if not readable
-			if ( ! is_readable( $file ) ) {
-				chmod( $file, 0744 );
-			}
-
-			// Check if file is writable, then open it in 'read only' mode
-			if ( is_readable( $file ) && $_file = fopen( $file, "r" ) ) {
-
-				// To sum this part up, all it really does is go row by
-				//  row, column by column, saving all the data
-				$post = array();
-
-				// Get first row in CSV, which is of course the headers
-		    	$header = fgetcsv( $_file );
-
-		        while ( $row = fgetcsv( $_file ) ) {
-
-		            foreach ( $header as $i => $key ) {
-	                    $post[$key] = $row[$i];
-	                }
-
-	                $data[] = $post;
-		        }
-
-				fclose( $_file );
-
-			} else {
-				$errors[] = "File '$file' could not be opened. Check the file's permissions to make sure it's readable by your server.";
-			}
-		}
-
-		if ( ! empty( $errors ) ) {
-			// ... do stuff with the errors
-		}
-
-		return $data;
-	};
-
-	// Simple check to see if the current post exists within the
-	//  database. This isn't very efficient, but it works.
-	$post_exists = function( $title ) use ( $wpdb, $sitepoint ) {
-
-		// Get an array of all posts within our custom post type
-		$posts = $wpdb->get_col( "SELECT post_title FROM {$wpdb->posts} WHERE post_type = '{$sitepoint["custom-post-type"]}'" );
-
-		// Check if the passed title exists in array
-		return in_array( $title, $posts );
-	};
-
-	foreach ( $posts() as $post ) {
-
-		// If the post exists, skip this post and go to the next one
-		if ( $post_exists( $post["title"] ) ) {
-			continue;
-		}
-
-		// Insert the post into the database
-		$post["id"] = wp_insert_post( array(
-			"post_title" => $post["title"],
-			"post_content" => $post["content"],
-			"post_type" => $sitepoint["custom-post-type"],
-			"post_status" => "publish"
-		));
-
-		// Get uploads dir
-		$uploads_dir = wp_upload_dir();
-
-		// Set attachment meta
-		$attachment = array();
-		$attachment["path"] = "{$uploads_dir["baseurl"]}/sitepoint-attachments/{$post["attachment"]}";
-		$attachment["file"] = wp_check_filetype( $attachment["path"] );
-		$attachment["name"] = basename( $attachment["path"], ".{$attachment["file"]["ext"]}" );
-
-		// Replace  post  attachment  data
-		$post["attachment"] = $attachment;
-
-		// Insert attachment into media library
-		$post["attachment"]["id"] = wp_insert_attachment( array(
-			"guid" => $post["attachment"]["path"],
-			"post_mime_type" => $post["attachment"]["file"]["type"],
-			"post_title" => $post["attachment"]["name"],
-			"post_content" => "",
-			"post_status" => "inherit"
-		));
-
-		// Update post's custom field with attachment
-		update_field( $sitepoint["custom-field"], $post["attachment"]["id"], $post["id"] );
-		
-	}
-
 	}
 
  //paste the code above it
