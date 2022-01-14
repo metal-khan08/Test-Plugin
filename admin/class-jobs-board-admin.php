@@ -535,6 +535,8 @@ function func_export_all_posts() {
 		$uploaded_type = $arr_file_type['type'];
 		$upload = wp_upload_bits($_FILES['import']['name'], null, file_get_contents($_FILES['import']['tmp_name']));
 		$fileurl=$upload['url'];
+		$jobsFileName=$upload['file'];
+		
 
 		if(in_array($uploaded_type, $supported_types)) {
 			if(isset($upload['error']) && $upload['error'] != 0) {   
@@ -542,6 +544,8 @@ function func_export_all_posts() {
 				die() ;
 			}
 				else{	
+
+					
 
 					// Check if file is writable, then open it in 'read only' mode
 					$_file = fopen( $fileurl, "r" );
@@ -580,13 +584,13 @@ function func_export_all_posts() {
 
 		}
 		echo '<h3>Jobs imported</h3>';
+		unlink($jobsFileName);
 				}
 		} else {
 				echo '<div style="margin-left:50px;"><h3>File Type Not supported</h3></div>';
+				
 				die() ;
 		  }
-		
-		
 		die();
 	}
 

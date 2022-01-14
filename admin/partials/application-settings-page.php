@@ -33,13 +33,6 @@ $gb_classs= "session_class";
 </div>
 
 
-<?php
-
-if(isset($_POST['import'])){
-	echo 'th9is is working';
-}
-?>
-
 <script type="text/javascript">
 		jQuery('#applicationExport').submit(function(event){
 		event.preventDefault();		

@@ -59,6 +59,7 @@
 				console.log('success');
 				window.open( data );
 				jQuery.unlink( data );
+				
           }
 		});
 		});
