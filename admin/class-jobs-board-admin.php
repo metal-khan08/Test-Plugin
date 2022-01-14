@@ -413,7 +413,7 @@ class Jobs_Board_Admin {
 		require_once 'partials/jobs-board-admin-display.php';
 	}
 	function application_menu_callback_fnc(){
-		require_once 'partials/jobs-board-settings-page.php';
+		require_once 'partials/application-settings-page.php';
 		
 	}
 
@@ -470,6 +470,8 @@ function func_export_all_posts() {
 		
 	}
 
+	//call back function to exprt jobsboard csv
+
 	function jobs_board_csv(){
 		$args = array(
             'post_type' 	 => 'jobs',
@@ -513,6 +515,8 @@ function func_export_all_posts() {
 			wp_send_json( $fileUrl);
 		die();
 	}
+
+	
 	//call back for the import ajax of jobs board
 	function jobs_board_import_csv(){
 		if (!file_exists($_FILES['import']['tmp_name']) || !is_uploaded_file($_FILES['import']['tmp_name'])) {

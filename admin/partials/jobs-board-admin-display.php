@@ -18,27 +18,29 @@
 
         <!--------------------- settings page for the jobs board ------------------------------->
 
+
 <div class="container" style="margin-top:40px; max-width:70%; text-align:center; ">
-  <div class="row alert alert-primary">
-    <div class="col-sm">
-        <h4>Click this button to export Jobs </h4>
+  <div class="row">
+    <div class="col" style="background-color: mistyrose; padding:20px;">
+		<h4>Click this button to export Jobs </h4>
         <form id='jobsExport' method="POST" action="">
 				<input class='btn btn-primary' type="submit" name="export" value="Export">
-    </form>
+    	</form>
     </div>
-	<div class="col-sm">
-        <h4>Import your videos</h4>
-        <form action="<?php echo admin_url('admin-ajax.php' ) ?>" enctype="multipart/form-data" method="POST" id="importAction">
+    <div class="col" style="background-color: papayawhip; padding:20px;">
+		<form action="<?php echo admin_url('admin-ajax.php' ) ?>" enctype="multipart/form-data" method="POST" id="importAction">
+			<h4>Click this button to import Jobs </h4>
 			<input class='btn btn-primary' type="file" name="import">
 			<input type="hidden" name="action" value="jobs_board_import_csv">
 			<input type="submit" name="import" value="import">
-		</form>
+		</form>	
     </div>
   </div>
-</div>
 
 
+  <!---------------------------- script for ajax -------------------------------->
 
+  
 <script type="text/javascript">
 		jQuery('#jobsExport').submit(function(event){
 		event.preventDefault();		
