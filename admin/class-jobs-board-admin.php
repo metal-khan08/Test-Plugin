@@ -478,8 +478,8 @@ function func_export_all_posts() {
 
 			$application_content[] = array (
 				'Full Name' => $post_title,
-				'status'	 => implode(",", $status),
-				'num'		 => $Pnumber,
+				'status'	=> implode(",", $status),
+				'num'		=> $Pnumber,
 				'Job name'	=> $job_name,
 				'birthdate'	=> $birthDay,
 				'email'		=> $uemailval,
