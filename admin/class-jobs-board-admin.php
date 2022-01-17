@@ -292,9 +292,7 @@ class Jobs_Board_Admin {
             'status'       	  => __( 'Application Status','Application' ),
             'job_name'        => __( 'Job Name','Application' ),
 			'date'            => __( 'Date','Application'  )
-        );
-		return $columns;
-		
+        );		
 	}
 	//functio to show data in the columns of application dashboard
 	function application_fill_post_type_columns( $column, $post_id){
@@ -425,27 +423,56 @@ function func_export_all_posts() {
             'post_status' 	 => 'publish',
             'posts_per_page' => -1,
         );
+	
 		$application = new WP_Query( $args );
 		$path 		   = wp_upload_dir();
 		$application_content = array();
 		$filename 	   = "/applications.csv";
 		$file 		   = fopen( $path['path'].$filename, 'w');
+
+		$exampleStartDate= $_POST['startDate'];
+		$exampleEndDate=$_POST['EndDate'];
+		$examplejobName=$_POST['jobname'];
 		while ( $application->have_posts() ){ 
 			$application->the_post();
 			
-				$post_ID=get_the_ID();
+			$currentDate= get_the_date('Y-m-d');
+				if($exampleStartDate!=0 and $exampleEndDate!=0){
+					if (($currentDate < $exampleStartDate  and $currentDate > $exampleEndDate)or ($currentDate < $exampleStartDate) or ($currentDate > $exampleEndDate)) {
+						continue;
+					}
+				}
+				else if($exampleStartDate != 0){
+					if($currentDate < $exampleStartDate){
+						continue;
+					}
+				}else if ($exampleEndDate!=0){
+					if($currentDate > $exampleEndDate){
+						continue;
+					}
+				}
+			$post_ID=get_the_ID();
+			$job_name=get_post_meta( $post_ID, 'jobname', true );
+			if($examplejobName != ''){
+			if($examplejobName != $job_name){
+				continue;
+				}
+			}
+
+			
 				$terms = wp_get_object_terms( $post_ID, 'application_status');
 				$status = array();
 				foreach ( $terms as $term ) {
 				$status[] =$term->name; 
-				$post_URL=get_the_permalink();
 			} 
+
 			$Pnumber = get_post_meta( $post_ID, 'pnumber', true );
 			$birthDay=get_post_meta( $post_ID, 'birthdate', true );
 			$uemailval=get_post_meta( $post_ID, 'email', true );
 			$pnumberval=get_post_meta( $post_ID, 'pnumber', true );
 			$ucaddresslval=get_post_meta( $post_ID, 'caddress' , true);
-			$job_name=get_post_meta( $post_ID, 'jobname', true );
+			
+			$applicationDate=get_the_date('Y,m,d');
 
 			$post_title=get_the_title();
 
@@ -456,7 +483,8 @@ function func_export_all_posts() {
 				'Job name'	=> $job_name,
 				'birthdate'	=> $birthDay,
 				'email'		=> $uemailval,
-				'caddress'	=> $ucaddresslval
+				'caddress'	=> $ucaddresslval,
+				'Publish Data'	=> $applicationDate,
 			);
 		}
 		$keys = array_keys( $application_content[0] );
@@ -466,7 +494,8 @@ function func_export_all_posts() {
 			fputcsv( $file, $application_info );
 		}
 			fclose( $file );
-			$fileUrl = $path['url'].$filename;		
+			$fileUrl = $path['url'].$filename;	
+			
 			wp_send_json( $fileUrl);
 		die();
 		
@@ -499,6 +528,7 @@ function func_export_all_posts() {
 			$getJobLocation = get_post_meta( $post_ID, 'meta_job_location', true );
 			$getJobSalary = get_post_meta( $post_ID, 'meta_number', true );
 			$getJobTimings = get_post_meta( $post_ID, 'meta_timings', true );
+			$getJobBenefits = get_post_meta( $post_ID, 'custom_benefits', true );
 			$post_title=get_the_title();
 
 			$application_content[] = array (
@@ -507,7 +537,8 @@ function func_export_all_posts() {
 				'category'	 => implode(",", $status),
 				'city'		 => $getJobLocation,
 				'salary'	 => $getJobSalary,
-				'timings'	 => $getJobTimings
+				'timings'	 => $getJobTimings,
+				'benefits'	 => $getJobBenefits
 			);
 		}
 		$keys = array_keys( $application_content[0] );
@@ -544,9 +575,6 @@ function func_export_all_posts() {
 				die() ;
 			}
 				else{	
-
-					
-
 					// Check if file is writable, then open it in 'read only' mode
 					$_file = fopen( $fileurl, "r" );
 						//  row, column by column, saving all the data
