@@ -658,7 +658,7 @@ function func_export_all_posts() {
 				"post_status" => "publish"
 			));
 
-			// Update post's custom meta fields 
+			// Update post's custom meta fields
 			update_post_meta($post["id"], "meta_job_location", $post["city"]);
 			update_post_meta($post["id"], "meta_number", $post["salary"]);
 			update_post_meta($post["id"], "meta_timings", $post["timings"]);
