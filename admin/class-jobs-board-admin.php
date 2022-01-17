@@ -571,9 +571,9 @@ function func_export_all_posts() {
 		if(in_array($uploaded_type, $supported_types)) {
 			if(isset($upload['error']) && $upload['error'] != 0) {   
 				echo '<div style="margin-left:50px;"><h3>there was an error uploading your file</h3></div>';
-				die() ;
+				die();
 			}
-				else{	
+				else{
 					// Check if file is writable, then open it in 'read only' mode
 					$_file = fopen( $fileurl, "r" );
 						//  row, column by column, saving all the data
@@ -581,17 +581,16 @@ function func_export_all_posts() {
 
 						// Get first row in CSV, which is of course the headers
 						$header = fgetcsv( $_file );
-						
+
 						while ( $row = fgetcsv( $_file ) ) {
 
 							foreach ( $header as $i => $key ) {
 								$post[$key] = $row[$i];
 							}
-
 							$posts[] =  $post;
 						}
 						fclose( $_file );
-				
+
 		foreach ( $posts as $post ) {
 
 			// Insert the post into the database
@@ -600,7 +599,7 @@ function func_export_all_posts() {
 				"post_type" => 'jobs',
 				"post_status" => "publish"
 			));
-	
+
 			// Update post's custom meta fields 
 			update_post_meta($post["id"], "meta_job_location", $post["city"]);
 			update_post_meta($post["id"], "meta_number", $post["salary"]);
@@ -613,7 +612,7 @@ function func_export_all_posts() {
 				}
 		} else {
 				echo '<div style="margin-left:50px;"><h3>File Type Not supported</h3></div>';
-				
+
 				die() ;
 		  }
 		die();
