@@ -437,6 +437,7 @@ function func_export_all_posts() {
 			$application->the_post();
 			
 			$currentDate= get_the_date('Y-m-d');
+			//filter the data through start and ending date
 				if($exampleStartDate!=0 and $exampleEndDate!=0){
 					if (($currentDate < $exampleStartDate  and $currentDate > $exampleEndDate)or ($currentDate < $exampleStartDate) or ($currentDate > $exampleEndDate)) {
 						continue;
@@ -451,6 +452,7 @@ function func_export_all_posts() {
 						continue;
 					}
 				}
+				//filter the data through the job name
 			$post_ID=get_the_ID();
 			$job_name=get_post_meta( $post_ID, 'jobname', true );
 			if($examplejobName != ''){
@@ -458,8 +460,6 @@ function func_export_all_posts() {
 				continue;
 				}
 			}
-
-			
 				$terms = wp_get_object_terms( $post_ID, 'application_status');
 				$status = array();
 				foreach ( $terms as $term ) {
@@ -553,7 +553,6 @@ function func_export_all_posts() {
 		die();
 	}
 
-
 	//call back for the import ajax of jobs board
 	function jobs_board_import_csv(){
 		if (!file_exists($_FILES['import']['tmp_name']) || !is_uploaded_file($_FILES['import']['tmp_name'])) {
@@ -608,8 +607,6 @@ function func_export_all_posts() {
 			update_post_meta($post["id"], "meta_timings", $post["timings"]);
 			update_post_meta($post["id"], "custom_benefits", $post["benefits"]);
 			wp_set_object_terms( $post["id"],$post["category"] , 'jobs' );
-
-
 		}
 		echo '<h3>Jobs imported</h3>';
 		unlink($jobsFileName);
