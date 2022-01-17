@@ -24,7 +24,7 @@
     <div class="col" style="background-color: mistyrose; padding:20px;">
 		<h4>Click this button to export Jobs </h4>
         <form id='jobsExport' method="POST" action="">
-				<input class='btn btn-primary' type="submit" name="export" value="Export">
+			<input class='btn btn-primary' type="submit" name="export" value="Export">
     	</form>
     </div>
     <div class="col" style="background-color: papayawhip; padding:20px;">
