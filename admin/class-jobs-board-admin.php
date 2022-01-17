@@ -552,8 +552,8 @@ function func_export_all_posts() {
 			//rerutn the data in the form of json 
 			wp_send_json( $fileUrl);
 		die();
-		
 	}
+	
 	/**
 	 * call back function to export jobsboard csv.
 	 *
@@ -630,7 +630,6 @@ function func_export_all_posts() {
 		$fileurl=$upload['url'];
 		$jobsFileName=$upload['file'];
 
-
 		if(in_array($uploaded_type, $supported_types)) {
 			if(isset($upload['error']) && $upload['error'] != 0) {   
 				echo '<div style="margin-left:50px;"><h3>there was an error uploading your file</h3></div>';
@@ -673,9 +672,8 @@ function func_export_all_posts() {
 				}
 		} else {
 				echo '<div style="margin-left:50px;"><h3>File Type Not supported</h3></div>';
-
 				die() ;
-		  }
+			}
 		die();
 	}
 
