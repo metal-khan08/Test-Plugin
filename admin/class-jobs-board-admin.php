@@ -239,10 +239,10 @@ class Jobs_Board_Admin {
 
 	function application_custom_post_type(){
 		$applabels = array(
-			'name' =>'Application',
+			  'name' 		 =>'Application',
 			  'add_new_item' =>'New Application',
-			  'edit_item' =>'Edit Application',
-			  'all_items'=> 'All Applications',
+			  'edit_item' 	 =>'Edit Application',
+			  'all_items'	 => 'All Applications',
 			  'Singular_name'=> 'Application'
 		);
 		$appargs = array(
@@ -388,7 +388,6 @@ class Jobs_Board_Admin {
 		}
 	}
 
-
 	/**
 	 * function when the status is changed the email is sent to the user .
 	 *
@@ -445,7 +444,6 @@ class Jobs_Board_Admin {
 		}
 		return $data;
 	}
-
 
 	/**
 	 * call back for adding settings menu for the jobs and application .
@@ -553,7 +551,7 @@ function func_export_all_posts() {
 			wp_send_json( $fileUrl);
 		die();
 	}
-	
+
 	/**
 	 * call back function to export jobsboard csv.
 	 *
