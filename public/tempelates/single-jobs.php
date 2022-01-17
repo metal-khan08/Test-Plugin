@@ -67,7 +67,9 @@ function insert_new_application_function(){
                     'post_status'   => 'publish',   
                     'post_type' 	=> 'application'
                 );
+                //inser the post and getting the id
                     $application_id = wp_insert_post($post);
+                    //updating the inserted post meta values
                     update_post_meta($application_id, "fname", $_POST["fname"] );
                     update_post_meta($application_id, "sname", $_POST["sname"] );
                     update_post_meta($application_id, "birthdate", $_POST["birthdate"] );

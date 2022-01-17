@@ -34,6 +34,8 @@
 		<div class="row "style="background-color: lightsteelblue; padding:20px;">
 			<div class="col">
 			<?php
+
+			//drop down to show the jobs name to select from
 				$args = array(
 					'post_type'      => 'application',
 					'posts_per_page' => '-1'
@@ -67,13 +69,7 @@
   	</form>	
 </div>
 
-<div id="result">
-
-</div>
-
-
-
-
+<!-- ajax request for the form above to export the csv -->
 <script type="text/javascript">
 
 
@@ -81,7 +77,6 @@
 		$('#applicationExport').ajaxForm({
 			success:function(response){
 				window.open( response );
-				// document.getElementById("result").innerHTML += response;
 
 
 

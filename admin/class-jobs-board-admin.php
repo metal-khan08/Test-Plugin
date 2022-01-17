@@ -116,13 +116,11 @@ class Jobs_Board_Admin {
 	}
 
 	/**
-	 * add custo post type.
+	 * call back function for jobs board custom post type.
 	 *
 	 * @since    1.0.0
 	 */
 
-
-	 // creating Jobs board custom Post type
 	function create_jobsboard_cpt() {
 		$labels = array(
 			  'name' 		 =>'Jobs Board',
@@ -152,7 +150,12 @@ class Jobs_Board_Admin {
 		register_post_type( 'jobs', $args );
 	}
 
-	//adding metaboxes for jobs board metabox
+	/**
+	 * call back function for jobs board meta boxes.
+	 *
+	 * @since    1.0.0
+	 */
+
 	function location_metabox(){
 		add_meta_box(
 			'pdetails',
@@ -164,12 +167,16 @@ class Jobs_Board_Admin {
 		);
 	}
 
-	//call back funtion for the metabox
+	/**
+	 * call back function for jobs board meta boxes tempelate.
+	 *
+	 * @since    1.0.0
+	 */
+
 	function location_meta_input_box($post){ 
 		$jobpostId= $post->ID;
 			?>
-		
-			<!-- this the fields of meta box -->
+			<!----- this is html to show fields of meta box ----->
 			<ul>
 				<h3>Location</h3>
 				<input type="text" name="meta_job_location" id="meta_job_location" value="<?php echo get_post_meta($jobpostId, 'meta_job_location', true ); ?>"/>
@@ -182,6 +189,13 @@ class Jobs_Board_Admin {
 			</ul>
 			<?php
 	}
+
+	/**
+	 * call back function for updating the meta fields for the jobsboard.
+	 *
+	 * @since    1.0.0
+	 */
+
 	function pdetails_save($post_id){
 		//saving the meta data into individual variables 
 		$jobLocation=isset($_POST["meta_job_location"]) ? $_POST["meta_job_location"] : 'Enter Location';
@@ -195,12 +209,15 @@ class Jobs_Board_Admin {
 		update_post_meta($post_id, "custom_benefits", $jobBenefits);
 		}
 
-	//adding custom taxonomy
+	/**
+	 * call back function for jobs category taxonomy.
+	 *
+	 * @since    1.0.0
+	 */
 	function job_boards_taxonomy(){
 		$labels = array(
 			'name' =>  'Job Category',
-	); 
-		 
+	);  
 		// Now register the non-hierarchical taxonomy like tag
 		  register_taxonomy('jobs','jobs',array(
 			'hierarchical'		 => false,
@@ -214,7 +231,12 @@ class Jobs_Board_Admin {
 		  ));
 	}
 
-	// custom post type for application
+	/**
+	 * call back function for application CPT.
+	 *
+	 * @since    1.0.0
+	 */
+
 	function application_custom_post_type(){
 		$applabels = array(
 			'name' =>'Application',
@@ -242,11 +264,13 @@ class Jobs_Board_Admin {
 		register_post_type( 'application', $appargs );
 	}
 
-	//adding custom taxonomy for the applicaiton
-	function application_taxonomy(){
-		
+	/**
+	 * call back function for application status taxonomy.
+	 *
+	 * @since    1.0.0
+	 */
 
-
+	 function application_taxonomy(){
 		  $labels = array(
 			'name'              => _x( 'Application Status', 'taxonomy general name' ),
 			'singular_name'     => _x( 'status', 'taxonomy singular name' ),
@@ -269,7 +293,11 @@ class Jobs_Board_Admin {
 		register_taxonomy( 'application_status', [ 'application' ], $args );
 	}
 	 
-	//adding metaboxes for application metabox
+	/**
+	 * call back function for application metaboxes to show data.
+	 *
+	 * @since    1.0.0
+	 */
 	function application_metabox(){
 		add_meta_box(
 			'appdetails',
@@ -281,10 +309,51 @@ class Jobs_Board_Admin {
 		);
 	}
 
+	/**
+	 * call back function for application metaboxes template.
+	 *
+	 * @since    1.0.0
+	 */
 
-	//custom column for the application post type
+	function application_meta_input_box($post){ 
+		//fetch the value from the database and saved in to variables
+		$postId =$post->ID;
+		$fnameval=get_post_meta($postId, 'fname', true );
+		$snameval=get_post_meta( $postId, 'sname', true );
+		$bdateval=get_post_meta( $postId, 'birthdate', true );
+		$emailval=get_post_meta( $postId, 'email', true );
+		$pnumberval=get_post_meta( $postId, 'pnumber', true );
+		$caddresslval=get_post_meta( $postId, 'caddress' , true);
+		$jobname=get_post_meta( $postId, 'jobname', true );
+		$personResume=get_post_meta( $postId, 'resume', true);
+		?>
+		<!-- this the fields of meta box -->
+		<ul>
+			<label for="name">Full Name</label><br>
+			<input type="text" name="fname" id="name" value="<?php echo $fnameval; ?>" placeholder="First name" /><input type="text" name="sname" id="name" value="<?php echo $snameval; ?>" placeholder="second name"/><br>
+			<label for="birthdate">Birth date</label><br>
+			<input type="date" id="birthdate" name="birthdate" value=""/><br>
+			<label for="email">Email Address</label><br>
+			<input type="text" name="email" id="email" value="<?php echo $emailval; ?>"/><br>
+			<label for="pnumber">Phone Number</label><br>
+			<input type="text" name="pnumber" id="pnumber" value="<?php echo $pnumberval; ?>"/><br>
+			<label for="caddress">Complete Address</label><br>
+			<input type="text" name="caddress" id="caddress" value="<?php echo $caddresslval; ?>"/><br>
+			the name of the job applied is <strong ><?php echo $jobname; ?></strong>
+		</ul>
+		<?php
+	  $resumeUrl= $personResume['url']; ?>
+	  click to download resume <button><a download="<?php echo $fnameval; ?> resume" href="<?php echo $resumeUrl; ?>">Download Resume</a></button>
+<?php }
+
+	/**
+	 * call back function for application columns.
+	 *
+	 * @since    1.0.0
+	 */
+
 	function application_post_type_columns($columns){
-        $post_name  = 'application';
+
         return array(
 			'cb'			  => __( '<input type="checkbox" />' ),
             'title'           => __( 'Title', 'application' ),
@@ -294,7 +363,11 @@ class Jobs_Board_Admin {
 			'date'            => __( 'Date','Application'  )
         );		
 	}
-	//functio to show data in the columns of application dashboard
+	/**
+	 * call back function for application columns filing data.
+	 *
+	 * @since    1.0.0
+	 */
 	function application_fill_post_type_columns( $column, $post_id){
 
 		switch ( $column ) {
@@ -316,43 +389,15 @@ class Jobs_Board_Admin {
 	}
 
 
-	//call back funtion for the application metabox
-	function application_meta_input_box($post){ 
-			//fetch the value from the database and saved in to variables
-			$postId =$post->ID;
-			$fnameval=get_post_meta($postId, 'fname', true );
-			$snameval=get_post_meta( $postId, 'sname', true );
-			$bdateval=get_post_meta( $postId, 'birthdate', true );
-			$emailval=get_post_meta( $postId, 'email', true );
-			$pnumberval=get_post_meta( $postId, 'pnumber', true );
-			$caddresslval=get_post_meta( $postId, 'caddress' , true);
-			$jobname=get_post_meta( $postId, 'jobname', true );
-			$personResume=get_post_meta( $postId, 'resume', true);
-			?>
-			<!-- this the fields of meta box -->
-			<ul>
-				<label for="name">Full Name</label><br>
-				<input type="text" name="fname" id="name" value="<?php echo $fnameval; ?>" placeholder="First name" /><input type="text" name="sname" id="name" value="<?php echo $snameval; ?>" placeholder="second name"/><br>
-				<label for="birthdate">Birth date</label><br>
-				<input type="date" id="birthdate" name="birthdate" value=""/><br>
-				<label for="email">Email Address</label><br>
-				<input type="text" name="email" id="email" value="<?php echo $emailval; ?>"/><br>
-				<label for="pnumber">Phone Number</label><br>
-				<input type="text" name="pnumber" id="pnumber" value="<?php echo $pnumberval; ?>"/><br>
-				<label for="caddress">Complete Address</label><br>
-				<input type="text" name="caddress" id="caddress" value="<?php echo $caddresslval; ?>"/><br>
-				the name of the job applied is <strong ><?php echo $jobname; ?></strong>
-			</ul>
-			<?php
-		  $resumeUrl= $personResume['url']; ?>
-		  click to download resume <button><a download="<?php echo $fnameval; ?> resume" href="<?php echo $resumeUrl; ?>">Download Resume</a></button>
-	<?php }
+	/**
+	 * function when the status is changed the email is sent to the user .
+	 *
+	 * @since    1.0.0
+	 */
 
-
-/****************funtion to send email when the applicatio status is changed****************/
-	function send_mail_when_status_changed($data, $postarr, $unsanitized_postarr){
+	 function send_mail_when_status_changed($data, $postarr, $unsanitized_postarr){
 		if($data['post_type']!='application'){ //checking if the post type is application
-			return $data;
+			return $data;//return if the post type is not appplication
 		}
 		$post_ID=!empty($postarr['post_id']) ? $postarr['post_id'] :'';
 		//getting the updated taxonomy ID
@@ -401,41 +446,49 @@ class Jobs_Board_Admin {
 		return $data;
 	}
 
-	/************************admin menu section for the jobs-Board and application************************/
+
+	/**
+	 * call back for adding settings menu for the jobs and application .
+	 *
+	 * @since    1.0.0
+	 */
 
 	function jobs_board_settings_menu(){
 		add_submenu_page( 'edit.php?post_type=jobs', 'J-Board Settings', 'J-Board Settings','manage_options', 'jobs-board-settings',array($this ,'jobs_board_menu_callback_fnc')  );
 		add_submenu_page( 'edit.php?post_type=application', 'Application Settings', 'Application Settings','manage_options', 'application-settings',array($this ,'application_menu_callback_fnc')  );
 	}
 	function jobs_board_menu_callback_fnc(){
-		require_once 'partials/jobs-board-admin-display.php';
+		require_once 'partials/jobs-board-admin-display.php';//cal back for the jobs board settings page
 	}
 	function application_menu_callback_fnc(){
-		require_once 'partials/application-settings-page.php';
+		require_once 'partials/application-settings-page.php';//call back for the application settings page
 		
 	}
-
-
-//call back for the ajax request and to create the csv file
+	/**
+	 * call back for the ajax request and to create the csv file for application export .
+	 *
+	 * @since    1.0.0
+	 */
 function func_export_all_posts() {
         $args = array(
             'post_type' 	 => 'application',
             'post_status' 	 => 'publish',
             'posts_per_page' => -1,
         );
-	
+
+		//query to get the applications
 		$application = new WP_Query( $args );
 		$path 		   = wp_upload_dir();
 		$application_content = array();
 		$filename 	   = "/applications.csv";
 		$file 		   = fopen( $path['path'].$filename, 'w');
 
-		$exampleStartDate= $_POST['startDate'];
-		$exampleEndDate=$_POST['EndDate'];
-		$examplejobName=$_POST['jobname'];
+		$exampleStartDate= $_POST['startDate'];//get the start date if set
+		$exampleEndDate=$_POST['EndDate'];//get the end date if set
+		$examplejobName=$_POST['jobname'];//get the job name if set
 		while ( $application->have_posts() ){ 
 			$application->the_post();
-			
+
 			$currentDate= get_the_date('Y-m-d');
 			//filter the data through start and ending date
 				if($exampleStartDate!=0 and $exampleEndDate!=0){
@@ -460,22 +513,23 @@ function func_export_all_posts() {
 				continue;
 				}
 			}
+			//getting the status of the application
 				$terms = wp_get_object_terms( $post_ID, 'application_status');
 				$status = array();
 				foreach ( $terms as $term ) {
 				$status[] =$term->name; 
 			} 
-
+			//geting the post meta
 			$Pnumber = get_post_meta( $post_ID, 'pnumber', true );
 			$birthDay=get_post_meta( $post_ID, 'birthdate', true );
 			$uemailval=get_post_meta( $post_ID, 'email', true );
 			$pnumberval=get_post_meta( $post_ID, 'pnumber', true );
 			$ucaddresslval=get_post_meta( $post_ID, 'caddress' , true);
-			
+
 			$applicationDate=get_the_date('Y,m,d');
 
 			$post_title=get_the_title();
-
+			//saving the application data into the array
 			$application_content[] = array (
 				'Full Name' => $post_title,
 				'status'	=> implode(",", $status),
@@ -488,49 +542,53 @@ function func_export_all_posts() {
 			);
 		}
 		$keys = array_keys( $application_content[0] );
-
+		//creating a csv file on the basis of the array
 		fputcsv( $file, $keys );
 		foreach ($application_content as $key => $application_info) {
 			fputcsv( $file, $application_info );
 		}
 			fclose( $file );
 			$fileUrl = $path['url'].$filename;	
-			
+			//rerutn the data in the form of json 
 			wp_send_json( $fileUrl);
 		die();
 		
 	}
+	/**
+	 * call back function to export jobsboard csv.
+	 *
+	 * @since    1.0.0
+	 */
 
-	//call back function to export jobsboard csv
-
-	function jobs_board_csv(){
-		
+	function jobs_board_csv(){	
 		$args = array(
             'post_type' 	 => 'jobs',
             'post_status' 	 => 'publish',
             'posts_per_page' => -1,
         );
+		//meta query to get the jobs
 		$application = new WP_Query( $args );
 		$path 		   = wp_upload_dir();
 		$application_content = array();
-		$filename 	   = "/jobs.csv";
+		$filename 	   = "/jobs.csv";//file name with the jobs are exported
 		$file 		   = fopen( $path['path'].$filename, 'w');
 		while ( $application->have_posts() ){ 
 			$application->the_post();
-			
+				//getting the jobs type
 				$post_ID=get_the_ID();
 				$terms = wp_get_object_terms( $post_ID, 'jobs');
 				$status = array();
 				foreach ( $terms as $term ) {
 				$status[] =$term->name; 
 				$post_URL=get_the_permalink();
-			} 
+			}
+			//getting the jobs meta
 			$getJobLocation = get_post_meta( $post_ID, 'meta_job_location', true );
 			$getJobSalary = get_post_meta( $post_ID, 'meta_number', true );
 			$getJobTimings = get_post_meta( $post_ID, 'meta_timings', true );
 			$getJobBenefits = get_post_meta( $post_ID, 'custom_benefits', true );
 			$post_title=get_the_title();
-
+			//jobs content
 			$application_content[] = array (
 				'title' => $post_title,
 				'URL'		 => $post_URL,
@@ -553,8 +611,13 @@ function func_export_all_posts() {
 		die();
 	}
 
-	//call back for the import ajax of jobs board
+	/**
+	 * call back for the import ajax of jobs board.
+	 *
+	 * @since    1.0.0
+	 */
 	function jobs_board_import_csv(){
+		//check if the user uploaded the file 
 		if (!file_exists($_FILES['import']['tmp_name']) || !is_uploaded_file($_FILES['import']['tmp_name'])) {
 			echo'<div style="margin-left:50px;"><h3>File not uploaded</h3></div>';
 			die;
@@ -566,7 +629,7 @@ function func_export_all_posts() {
 		$upload = wp_upload_bits($_FILES['import']['name'], null, file_get_contents($_FILES['import']['tmp_name']));
 		$fileurl=$upload['url'];
 		$jobsFileName=$upload['file'];
-		
+
 
 		if(in_array($uploaded_type, $supported_types)) {
 			if(isset($upload['error']) && $upload['error'] != 0) {   
@@ -581,9 +644,7 @@ function func_export_all_posts() {
 
 						// Get first row in CSV, which is of course the headers
 						$header = fgetcsv( $_file );
-
 						while ( $row = fgetcsv( $_file ) ) {
-
 							foreach ( $header as $i => $key ) {
 								$post[$key] = $row[$i];
 							}
@@ -618,5 +679,4 @@ function func_export_all_posts() {
 		die();
 	}
 
- //paste the code above it
-}//class end bracked donot remove
+}

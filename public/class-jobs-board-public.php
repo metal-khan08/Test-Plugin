@@ -100,7 +100,12 @@ class Jobs_Board_Public {
 		wp_enqueue_script('jquery-form');	
 
 	}
-		//template for the single job page
+
+	/**
+	 * template for the single job page.
+	 *
+	 * @since    1.0.0
+	 */
 		function single_job_template($single){
 			global $post;
 			if($post->post_type == "jobs"){
@@ -110,7 +115,13 @@ class Jobs_Board_Public {
 			}
 			return $single;
 		}
-	// call back function to display jobs board
+
+	/**
+	 *  call back function to display jobs board.
+	 *
+	 * @since    1.0.0
+	 */
+		
 	function jobs_board_call_back_function(){
 		//this is to show the form to filter the jobs on the above
 		//creating custom query

@@ -42,6 +42,7 @@
   <!---------------------------- script for ajax -------------------------------->
 
 
+  <!-- ajax request to export csv -->
 <script type="text/javascript">
 		jQuery('#jobsExport').submit(function(event){
 		event.preventDefault();		
@@ -64,7 +65,7 @@
 		});
 		});
 
-		
+		// ajax for the csv import
 			jQuery(document).ready(function($){
 		$('#importAction').ajaxForm({
 			success:function(response){
