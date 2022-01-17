@@ -484,7 +484,7 @@ function func_export_all_posts() {
 		$exampleStartDate= $_POST['startDate'];//get the start date if set
 		$exampleEndDate=$_POST['EndDate'];//get the end date if set
 		$examplejobName=$_POST['jobname'];//get the job name if set
-		while ( $application->have_posts() ){ 
+		while ( $application->have_posts() ){
 			$application->the_post();
 
 			$currentDate= get_the_date('Y-m-d');
@@ -516,7 +516,7 @@ function func_export_all_posts() {
 				$status = array();
 				foreach ( $terms as $term ) {
 				$status[] =$term->name; 
-			} 
+			}
 			//geting the post meta
 			$Pnumber = get_post_meta( $post_ID, 'pnumber', true );
 			$birthDay=get_post_meta( $post_ID, 'birthdate', true );
@@ -579,23 +579,23 @@ function func_export_all_posts() {
 				foreach ( $terms as $term ) {
 				$status[] =$term->name; 
 				$post_URL=get_the_permalink();
-			}
-			//getting the jobs meta
-			$getJobLocation = get_post_meta( $post_ID, 'meta_job_location', true );
-			$getJobSalary = get_post_meta( $post_ID, 'meta_number', true );
-			$getJobTimings = get_post_meta( $post_ID, 'meta_timings', true );
-			$getJobBenefits = get_post_meta( $post_ID, 'custom_benefits', true );
-			$post_title=get_the_title();
-			//jobs content
-			$application_content[] = array (
-				'title' => $post_title,
-				'URL'		 => $post_URL,
-				'category'	 => implode(",", $status),
-				'city'		 => $getJobLocation,
-				'salary'	 => $getJobSalary,
-				'timings'	 => $getJobTimings,
-				'benefits'	 => $getJobBenefits
-			);
+				}
+				//getting the jobs meta
+				$getJobLocation = get_post_meta( $post_ID, 'meta_job_location', true );
+				$getJobSalary = get_post_meta( $post_ID, 'meta_number', true );
+				$getJobTimings = get_post_meta( $post_ID, 'meta_timings', true );
+				$getJobBenefits = get_post_meta( $post_ID, 'custom_benefits', true );
+				$post_title=get_the_title();
+				//jobs content
+				$application_content[] = array (
+					'title' => $post_title,
+					'URL'		 => $post_URL,
+					'category'	 => implode(",", $status),
+					'city'		 => $getJobLocation,
+					'salary'	 => $getJobSalary,
+					'timings'	 => $getJobTimings,
+					'benefits'	 => $getJobBenefits
+				);
 		}
 		$keys = array_keys( $application_content[0] );
 
