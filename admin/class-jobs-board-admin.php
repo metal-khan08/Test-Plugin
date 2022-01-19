@@ -470,14 +470,14 @@ class Jobs_Board_Admin {
 	 */
 	
 	function jobs_board_custom_settings(){
-		add_settings_section( "jobsBoardSettings", "jobsBoardSettings", '', 'jobs-board-settings' );
-		//register input field
-		register_setting( 'jobs-board-settings', 'jobs_settings_input', array(
-			'type'=>"string",
-			"sanitize_callback" => "sanitize_text_field",
-			"default" => ""
-		));
-		add_settings_field( "jobs_settings_input", "input_field", "jobs_setings_input_callback", 'jobs-board-settings', 'jobsBoardSettings');
+		// add_settings_section( "jobsBoardSettings", "jobsBoardSettings", '', 'jobs-board-settings' );
+		// //register input field
+		// register_setting( 'jobs-board-settings', 'jobs_settings_input', array(
+		// 	'type'=>"string",
+		// 	"sanitize_callback" => "sanitize_text_field",
+		// 	"default" => ""
+		// ));
+		// add_settings_field( "jobs_settings_input", "input_field", "jobs_setings_input_callback", 'jobs-board-settings', 'jobsBoardSettings');
 		
 	}
 	/**

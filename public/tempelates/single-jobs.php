@@ -1,7 +1,7 @@
 <?php  get_header();
 require_once 'template.php';
-if(isset($_POST["submit"]))
-{   
+if(isset($_POST["submit"])){   
+    
     insert_new_application_function();
     return;
 } 

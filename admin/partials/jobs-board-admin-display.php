@@ -28,7 +28,7 @@
     	</form>
     </div>
     <div class="col" style="background-color: papayawhip; padding:20px;">
-		<form action="<?php echo admin_url('admin-ajax.php' ) ?>" enctype="multipart/form-data" method="POST" id="importAction">
+		<form action="<?php// echo admin_url('admin-ajax.php' ) ?>" enctype="multipart/form-data" method="POST" id="importAction">
 			<h4>Click this button to import Jobs </h4>
 			<input class='btn btn-primary' type="file" name="import">
 			<input type="hidden" name="action" value="jobs_board_import_csv">
@@ -41,9 +41,9 @@
   <h2><?php echo get_admin_page_title(); ?></h2>
   <form action="options.php" method="POST">
 <?php
-  settings_fields( 'jobBoardSettings' );
-  do_settings_sections( 'jobBoardSettings' ); 
-  submit_button("submit");
+  // settings_fields( 'jobBoardSettings' );
+  // do_settings_sections( 'jobBoardSettings' ); 
+  // submit_button("submit");
   ?>
   
 
