@@ -162,8 +162,8 @@ class Jobs_Board_Admin {
 			'Job Details',
 			 array($this,'location_meta_input_box'),
 			'jobs',
-			'side',
-			'low'
+			'normal',
+			'high'
 		);
 	}
 
@@ -217,7 +217,7 @@ class Jobs_Board_Admin {
 	function job_boards_taxonomy(){
 		$labels = array(
 			'name' =>  'Job Category',
-	);  
+	);
 		// Now register the non-hierarchical taxonomy like tag
 		  register_taxonomy('jobs','jobs',array(
 			'hierarchical'		 => false,
@@ -462,6 +462,24 @@ class Jobs_Board_Admin {
 		require_once 'partials/application-settings-page.php';//call back for the application settings page
 		
 	}
+
+	/**
+	 * settings section for jobs  Board.
+	 *
+	 * @since    1.0.0
+	 */
+	
+	function jobs_board_custom_settings(){
+		add_settings_section( "jobsBoardSettings", "jobsBoardSettings", '', 'jobs-board-settings' );
+		//register input field
+		register_setting( 'jobs-board-settings', 'jobs_settings_input', array(
+			'type'=>"string",
+			"sanitize_callback" => "sanitize_text_field",
+			"default" => ""
+		));
+		add_settings_field( "jobs_settings_input", "input_field", "jobs_setings_input_callback", 'jobs-board-settings', 'jobsBoardSettings');
+		
+	}
 	/**
 	 * call back for the ajax request and to create the csv file for application export .
 	 *
@@ -674,5 +692,7 @@ function func_export_all_posts() {
 			}
 		die();
 	}
+
+
 
 }

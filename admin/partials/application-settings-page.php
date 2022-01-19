@@ -68,20 +68,3 @@
 		</div>
   	</form>	
 </div>
-
-<!-- ajax request for the form above to export the csv -->
-<script type="text/javascript">
-
-
-		jQuery(document).ready(function($){
-		$('#applicationExport').ajaxForm({
-			success:function(response){
-				window.open( response );
-
-
-
-			}
-		});
-	});
-</script>
-

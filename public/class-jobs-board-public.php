@@ -244,4 +244,5 @@ class Jobs_Board_Public {
 
 			}
 	} 
+	
 }
