@@ -178,7 +178,7 @@ class Jobs_Board {
 		//adding a custom taxonomy for application
 		$this->loader->add_action( 'init', $plugin_admin, 'application_taxonomy' );
 		
-		//column for the applicationmanage_edit-movie_columns
+		//column for the application
 		$this->loader->add_filter( 'manage_application_posts_columns', $plugin_admin, 'application_post_type_columns' );
         $this->loader->add_filter( 'manage_application_posts_custom_column', $plugin_admin, 'application_fill_post_type_columns', 10, 2);
 		//send mail on status changed

@@ -413,32 +413,32 @@ class Jobs_Board_Admin {
         $terms = wp_get_object_terms( $post_ID, 'application_status');
 		$old_status_ID='';
 		foreach ( $terms as $term ) {
-			$old_status_ID=$term->term_id; 
+			$old_status_ID=$term->term_id;
 		} 
 		if($old_status_ID!=$updated_status_ID){
 			if($updated_status_name=='accepted'){
 				// Email subject"
 				$subject = 'Your Application Status';
-			
+
 				// Email body
 				$message = 'Your Application for the Job was accepted ';
-			
+
 				wp_mail( $user_email, $subject, $message );
 			}else if($updated_status_name=='rejected'){
 				// Email subject, "New {post_type_label}"
 				$subject = 'Your Application Status';
-			
+
 				// Email body
 				$message = 'Your Application for the Job was Rejected ';
-			
+
 				wp_mail( $user_email, $subject, $message );
 			}else if($updated_status_name=='pending'){
 				// Email subject, "New {post_type_label}"
 				$subject = 'Your Application Status';
-			
+
 				// Email body
 				$message = 'Your Application for the Job was Pending ';
-			
+
 				wp_mail( $user_email, $subject, $message );
 			}
 		}
