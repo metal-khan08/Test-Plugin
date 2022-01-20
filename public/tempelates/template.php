@@ -57,7 +57,7 @@ function insert_new_application_function(){
 
   }
 
-
+//checking if to show address and birth date fields on aplication
 $options4 = get_option( 'jobs_board_checkbox_settings' );
 if($options4=='on'){
     $showAddress = '<label for="caddress"><strong>Current Address</strong></label><br>';
@@ -65,6 +65,7 @@ if($options4=='on'){
     $showBirthDate ='<label for="birthdate"><strong>Birth Date</strong></label><br>';
     $showBirthDate .='<input required type="date" id="birthdate" name="birthdate" ><br>';
 }
+//getting meta fromsettnig to see if the vacancy is not open
 $jobClosed =(!empty(get_option('jobs_board_text_settings'))) ? get_option('jobs_board_text_settings') : 'job has no vacancy' ;
 $jobpostId=get_the_ID();
 $isOpen =get_post_meta($jobpostId, 'vacancy', true );
