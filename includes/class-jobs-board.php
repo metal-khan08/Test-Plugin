@@ -192,7 +192,7 @@ class Jobs_Board {
 		//ajax for importing the jobs board posts
 		$this->loader->add_action( 'wp_ajax_jobs_board_import_csv', $plugin_admin,'jobs_board_import_csv' );
 		//setings section
-		$this->loader->add_action( 'init', $plugin_admin,'jobs_board_custom_settings' );
+		$this->loader->add_action( 'admin_init', $plugin_admin,'jobs_board_custom_settings' );
 		
 
 

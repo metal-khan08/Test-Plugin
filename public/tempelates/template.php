@@ -56,3 +56,12 @@ function insert_new_application_function(){
     }
 
   }
+
+
+$options4 = get_option( 'jobs_board_checkbox_settings' );
+if($options4=='on'){
+    $showAddress = '<label for="caddress"><strong>Current Address</strong></label><br>';
+    $showAddress.= '<input required type="text" id="caddress" name="caddress" placeholder="Enter Address"><br>';
+    $showBirthDate ='<label for="birthdate"><strong>Birth Date</strong></label><br>';
+    $showBirthDate .='<input required type="date" id="birthdate" name="birthdate" ><br>';
+}

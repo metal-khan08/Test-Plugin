@@ -38,12 +38,15 @@
   </div>
   <div id="result"></div> -->
 <div class="wrap">
-  <h2><?php echo get_admin_page_title(); ?></h2>
   <form action="options.php" method="POST">
 <?php
-  // settings_fields( 'jobBoardSettings' );
-  // do_settings_sections( 'jobBoardSettings' ); 
-  // submit_button("submit");
+   // output security fields for the registered setting "jobs-board-settings"
+   settings_fields( 'jobs-board-settings' );
+   // output setting sections and their fields
+   // (sections are registered for "jobs-board-settings", each field is registered to a specific section)
+   do_settings_sections( 'jobs-board-settings' );
+   // output save settings button
+   submit_button( 'Save Settings' );
   ?>
   
 

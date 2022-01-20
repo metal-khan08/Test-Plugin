@@ -470,16 +470,92 @@ class Jobs_Board_Admin {
 	 */
 	
 	function jobs_board_custom_settings(){
-		// add_settings_section( "jobsBoardSettings", "jobsBoardSettings", '', 'jobs-board-settings' );
-		// //register input field
-		// register_setting( 'jobs-board-settings', 'jobs_settings_input', array(
-		// 	'type'=>"string",
-		// 	"sanitize_callback" => "sanitize_text_field",
-		// 	"default" => ""
-		// ));
-		// add_settings_field( "jobs_settings_input", "input_field", "jobs_setings_input_callback", 'jobs-board-settings', 'jobsBoardSettings');
-		
+		  // Register a new setting for "jobs-board-settings" page.
+		  register_setting( 'jobs-board-settings', 'jobs_board_options' );
+		  register_setting( 'jobs-board-settings', 'jobs_board_text_settings' );
+		  register_setting( 'jobs-board-settings', 'jobs_board_search_settings' );
+		  register_setting( 'jobs-board-settings', 'jobs_board_checkbox_settings' );
+ 
+		  // Register a new section in the "jobs-board-settings" page.
+		  add_settings_section(
+			  'jobs_board_settings_section',
+			  __( 'Jobs Board Settings.', 'jobs-board-settings' ), '',
+			  'jobs-board-settings'
+		  );
+	   
+		  //settings field to display no of jobs
+		  add_settings_field(
+			  'number_of_jobs', 
+				  __( 'No of Jobs.', 'jobs-board-settings' ),
+			  array($this,'jobs_board_number_jobs_settings_field'),
+			  'jobs-board-settings',
+			  'jobs_board_settings_section',
+		  );
+		  //settings field to display in place of form when a job vacancy is closed
+		  add_settings_field(
+			'text_to_display', 
+				__( 'Enter Text', 'jobs-board-settings' ),
+			array($this,'jobs_board_text_settings_field'),
+			'jobs-board-settings',
+			'jobs_board_settings_section',
+		);
+		  //settings field to display Text for search button
+
+		add_settings_field(
+			'text_for_search', 
+				__( 'Text for search', 'jobs-board-settings' ),
+			array($this,'jobs_board_search_settings_field'),
+			'jobs-board-settings',
+			'jobs_board_settings_section',
+		);
+		  //settings field to display checkboxes to hide birthdate and current address fields from application form
+
+		add_settings_field(
+			'checkbox_to_display', // .
+				__( 'checkbox', 'jobs-board-settings' ),
+			array($this,'jobs_board_checkbox_settings_field'),
+			'jobs-board-settings',
+			'jobs_board_settings_section',
+		);
 	}
+	
+	//call back for settings field to display no of jobs
+	function jobs_board_number_jobs_settings_field($args){
+		// Get the value of the setting we've registered with register_setting()
+		$options = get_option( 'jobs_board_options' );
+		?>
+		<input type="number" min="1" max="10" name="jobs_board_options" id="jobs_board_options" value="<?php echo $options;?>">
+		<p>Enter the number of jobs to display on jobs baord(max no 10)</p>
+		<?php
+	}
+	//call back for settings field to display in place of form when a job vacancy is closed
+	function jobs_board_text_settings_field(){
+		// Get the value of the setting we've registered with register_setting()
+		$options2 = get_option( 'jobs_board_text_settings' );
+		?>
+		<input type="text" name="jobs_board_text_settings" id="jobs_board_text_settings" value="<?php echo $options2;?>">
+		<p>Text to display in place of form when a job vacancy is closed</p>
+		<?php
+	}
+	//call back for settings field to display Text for search button
+	function jobs_board_search_settings_field(){
+		$options3 = get_option( 'jobs_board_search_settings' );
+		?>
+		<input type="text" name="jobs_board_search_settings" id="jobs_board_search_settings" value="<?php echo $options3;?>">
+		<p>Text for search button</p>
+		<?php
+	}
+	//call back for settings field to display checkboxes to hide birthdate and current address fields from application form
+	function jobs_board_checkbox_settings_field(){
+		$options4 = get_option( 'jobs_board_checkbox_settings' );
+		
+		?>
+		<input type="checkbox" name="jobs_board_checkbox_settings"<?php echo ($options4=='on') ? "checked":""; ?> id="jobs_board_checkbox_settings">
+		<p>checkboxes to hide birthdate and current address fields from application form</p><br>
+		
+		<?php
+}
+
 	/**
 	 * call back for the ajax request and to create the csv file for application export .
 	 *

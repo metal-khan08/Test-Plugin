@@ -225,10 +225,11 @@ class Jobs_Board_Public {
 		}
 				//meta query for the job results page		
 				if(!$isfirst){
+					$options = get_option( 'jobs_board_options' );
 						//this is to show three jobs at the bottom
 						$args = array(
 							'post_type'      => 'jobs',
-							'posts_per_page' => '3'
+							'posts_per_page' => $options
 						);
 						$query = new WP_Query($args);
 						while($query->have_posts()) {
