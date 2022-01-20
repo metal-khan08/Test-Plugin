@@ -65,3 +65,7 @@ if($options4=='on'){
     $showBirthDate ='<label for="birthdate"><strong>Birth Date</strong></label><br>';
     $showBirthDate .='<input required type="date" id="birthdate" name="birthdate" ><br>';
 }
+$jobClosed =(!empty(get_option('jobs_board_text_settings'))) ? get_option('jobs_board_text_settings') : 'job has no vacancy' ;
+$jobpostId=get_the_ID();
+$isOpen =get_post_meta($jobpostId, 'vacancy', true );
+

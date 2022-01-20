@@ -1,8 +1,8 @@
 <?php  get_header();
 require_once 'template.php';
+if(!empty($isOpen)){
 
-
-if(isset($_POST["submit"])){   
+    if(isset($_POST["submit"])){   
     
     insert_new_application_function();
     return;
@@ -30,8 +30,10 @@ if(isset($_POST["submit"])){
 </div>
 
 <?php
-
-
+} else{
+    
+    echo "<div class='wrap'>".$jobClosed."</div>";
+}
 get_footer();
 
 

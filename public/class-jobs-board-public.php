@@ -166,11 +166,14 @@ class Jobs_Board_Public {
 					array_push($categoryarray,$jobtax->name);		
 					 }			
 				 }			
-				  } ?>
+				  } 
+				  
+				  $searchButton = get_option( 'jobs_board_search_settings' );
+				   ?>
 					</select>
 					<h4>Select Salary Range</h4>
 					<input type="range" />
-					<input type="submit" name="go" value="go"  >
+					<input type="submit" name="go" value="<?php echo $searchButton; ?>">
 		</form>
 		</div>
 

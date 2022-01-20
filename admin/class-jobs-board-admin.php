@@ -175,7 +175,9 @@ class Jobs_Board_Admin {
 
 	function location_meta_input_box($post){ 
 		$jobpostId= $post->ID;
-			?>
+			
+		$isOpen =get_post_meta($jobpostId, 'vacancy', true );
+		?>
 			<!----- this is html to show fields of meta box ----->
 			<ul>
 				<h3>Location</h3>
@@ -186,6 +188,9 @@ class Jobs_Board_Admin {
 				<input type="text" name="meta_timings" id="meta_timings" value="<?php echo $timval=get_post_meta($jobpostId, 'meta_timings', true ); ?>"/>
 				<h3>Benefits</h3>
 				<input type="text" name="custom_benefits" id="custom_benefits" value="<?php echo get_post_meta($jobpostId, 'custom_benefits', true ); ?>"/>
+				<h3>Have Vacancy?</h3>
+				<input type="checkbox" name="vacancy"<?php echo ($isOpen=='on') ? "checked":""; ?> id="vacancy">
+				
 			</ul>
 			<?php
 	}
@@ -202,11 +207,13 @@ class Jobs_Board_Admin {
 		$jobSalary= isset($_POST["meta_number"]) ? $_POST["meta_number"] : 'Enter Salary';
 		$jobTimings=isset($_POST["meta_timings"]) ? $_POST["meta_timings"] : 'Enter Timings';
 		$jobBenefits=isset($_POST["custom_benefits"]) ? $_POST["custom_benefits"] : 'No benefits';
+		$vacancy=isset($_POST["vacancy"]) ? $_POST["vacancy"] : '';
 		//updating the data into the database using the above captured values
 		update_post_meta($post_id, "meta_job_location", $jobLocation);
 		update_post_meta($post_id, "meta_number", $jobSalary);
 		update_post_meta($post_id, "meta_timings", $jobTimings);
 		update_post_meta($post_id, "custom_benefits", $jobBenefits);
+		update_post_meta($post_id, "vacancy", $vacancy);
 		}
 
 	/**
