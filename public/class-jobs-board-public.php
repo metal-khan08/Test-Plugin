@@ -129,7 +129,8 @@ class Jobs_Board_Public {
 			'post_type'      => 'jobs',
 			'posts_per_page' => '-1'
 		 );
-		 $query = new WP_Query($args); ?>
+		 $query = new WP_Query($args);
+		 ob_start(); ?>
 
 		 <h1>Jobs Board</h1>
 
@@ -247,6 +248,7 @@ class Jobs_Board_Public {
 						wp_reset_postdata()	;
 
 			}
+			return ob_get_clean();		
 	} 
 	
 }
